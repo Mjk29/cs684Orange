@@ -50,7 +50,7 @@ function dbConnect(req,res){
 	var c = new Client({
 	  host: '127.0.0.1',
 	  user: 'root',
-	  password: 'Matt5687'
+	  password: 'password'
 	});
 
 
