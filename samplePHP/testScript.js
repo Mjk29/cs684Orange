@@ -13,6 +13,15 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use(express.json());
 
+app.use(function(req, res, next) {
+
+  res.header("Access-Control-Allow-Origin", "*");
+
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+  next();
+
+});
 
 
 app.post('/', function (req, res) {
@@ -25,7 +34,7 @@ app.post('/', function (req, res) {
 
 
 
-var server = app.listen(1337, function () {
+var server = app.listen(5687, function () {
    var host = server.address().address
    var port = server.address().port
    
