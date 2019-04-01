@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import '../css/itemOutput.css';
-import { addItemToCart } from '../actions'
+import { addItemToCart, fetchFromServer } from '../actions'
 import {
 	Container,
 	Row,
@@ -39,32 +39,34 @@ export class Output_items extends Component{
 				console.log("rendering multiple items")
 				// const renderMultiple = this.props.multipleItems.map((item) => console.log(item.title))
 
+ 
+
+
 				const renderMultiple = this.props.multipleItems.map((item) => 
-				
-				
 				<div className="contact-card">
 					<Container fullHeight style={{"text-align":"center"}}>
 						<Row>
 							<img style={{width: 150, height: 150}} src={item.imageUrl+".jpeg"}></img>
 						</Row>
-						<Row>{'$'+item.price +'\n'}</Row>
+						<Row>{'$'+item.price.toFixed(2) +'\n'}</Row>
 						<Row>{item.title +'\n'}</Row>
 						<Row>
 							<Button color="warning"  
 								// style={{backgroundColor: '#a9ed4b', color:'#000000'}}
 								onClick={() => 
-									this.props.addItemToCart(
-										{productId:item.productId,usItemId:item.usItemId}
-									)
+										this.props.fetchFromServer({
+											query:{productId:item.productId,usItemId:item.usItemId}, 
+											searchType:"fullItemInfo",
+											yieldAction:"ADD_ENTIRE_ITEM_DATA_TO_CART"
+										})
+										// {productId:item.productId,usItemId:item.usItemId}
+									
 								}>
+
+
 
 								add to cart</Button>
 						</Row>
-
-						
-						 
-						
-						
 					</Container>
  				
  				</div>
@@ -109,6 +111,8 @@ export class Output_items extends Component{
 
 const mapDispatchToProps = (dispatch) => ({
 	addItemToCart: (text) => dispatch(addItemToCart(text)),
+	fetchFromServer: (text) => dispatch(fetchFromServer(text)),
+
 })
 
 

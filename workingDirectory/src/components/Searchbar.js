@@ -130,7 +130,7 @@ export class Searchbar extends Component {
 			})
 			// dispatch(this.props.searchTerm)
 		}
-	}
+	} 
 
 	
 	checkState=(evt)=>{

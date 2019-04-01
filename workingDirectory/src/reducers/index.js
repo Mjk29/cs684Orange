@@ -29,8 +29,16 @@ const reducer = (state = {}, action) => {
 		case 'FETCH_FROM_SERVER':
 			console.log("Fetch from server reduer")
 			console.log(action)
-			return{...state, 
-				loading: true
+			if (action.searchObj.searchType == "fullItemInfo") {
+				return{
+					...state
+				}
+			}
+			else{
+				return{
+					...state, 
+					loading: true
+				}
 			}
 
 		case 'FETCHED_SINGLE_ITEM':
@@ -99,8 +107,17 @@ const reducer = (state = {}, action) => {
 				cartModalState: !state.cartModalState
 		}
 
+		case 'ADD_ENTIRE_ITEM_DATA_TO_CART':
+			console.log("HERE IS TE ADD_ENTIRE_ITEM_DATA_TO_CART ")
+			console.log(action)
+			console.log(action.items)
+			return{
+				...state,
+				// cartItems:["asdasdasd"],
+				// loading:false,
+				cartItems: state.cartItems.concat(action.items)
 
-
+		}
 
 
 

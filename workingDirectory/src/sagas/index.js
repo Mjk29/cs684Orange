@@ -26,6 +26,8 @@ function* fetchNews() {
   
 }
 
+
+
  
 function* getItems(){
 	console.log("GETING ITEMS")
@@ -106,6 +108,15 @@ function fetchToServer(searchObject){
 }
 
 
+			// this.props.fetchFromServer({
+			// 	query:this.state.userInput, 
+			// 	searchType:"multipleItemSearch",
+			// 	yieldAction:"FETCHED_MULTIPLE_ITMES"
+			// })
+
+
+
+
 function* fetchFromServer(event){
 	// Event = {searchType, query, actionType}
 	// Fetch to server with searchType & query
@@ -131,7 +142,7 @@ function* fetchFromServer(event){
 			.then(response => response.json(), );
 			console.log("FETCHED FROM SDERVER")
 			console.log(json)
-			yield put({ type: "FETCHED_MULTIPLE_ITMES", items: json, });
+			yield put({ type: event.searchObj.yieldAction, items: json, });
 		}
 		catch(err){
 			console.log("bummer")
