@@ -12,8 +12,7 @@ import Amplify from "aws-amplify";
 import config from "./config";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
- 
+  
 const sagaMiddleware = createSagaMiddleware();
 
 
@@ -44,6 +43,15 @@ Amplify.configure({
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
     userPoolWebClientId: config.cognito.APP_CLIENT_ID
   },  
+  API: {
+    endpoints: [
+      {
+        name: "notes",
+        endpoint: config.apiGateway.URL,
+        region: config.apiGateway.REGION
+      },
+    ]
+}
 });
 
 

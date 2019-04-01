@@ -87,7 +87,13 @@ const reducer = (state = {}, action) => {
 		}
 
 
-
+		case 'LOGIN_USER':
+		console.log("HERE IS THE LOGIN USER ACTION")
+		console.log(action)
+			return{
+				...state,
+				// userEmail: action.toggleState.loginState
+			}
 
 
 

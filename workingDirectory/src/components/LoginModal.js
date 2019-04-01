@@ -1,114 +1,151 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react';
-// import {  Button, Modal, ModalHeader, 
-//           ModalBody, ModalFooter, 
-//           Form, FormGroup, Label, Input
-//         } from 'reactstrap';
-
-
 import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButtonDropdown,
-  InputGroupDropdown,
-  Input,
-  Button,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
- } from 'reactstrap';
-
-
+	InputGroup,
+	InputGroupAddon,
+	InputGroupButtonDropdown,
+	InputGroupDropdown,
+	Input,
+	Button,
+	Dropdown,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem,
+	Modal,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+	Alert,
+} from 'reactstrap';
 import { connect } from 'react-redux';
-import { toggleLoginModal } from '../actions'
+import { toggleLoginModal, userLoginAction } from '../actions'
 import { bindActionCreators } from 'redux'
- 
- 
+import { Auth } from "aws-amplify";
+
 
 class LoginModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false,
-      buttonLabel:"ASDASDDSASDASD",
-      loginWindowState:false,
-      username:"",
-      value:"",
-    };
+	constructor(props) {
+		super(props);
+		this.state = {
+			loading:false,
+			modal: false,
+			loginWindowState:false,
+			username:"",
+			password:"",
+			loginError:"",
+			userHasAuthenticated:false
+		};
 
-    this.toggle = this.toggle.bind(this);
-  }
+		this.toggle = this.toggle.bind(this);
+	}
 
-  toggle() {
-    this.props.toggleLoginWindowDispatch(this.props.loginWindowState)
-    // this.setState(prevState => ({
-    //   modal: !prevState.modal
-    // }));
-  }
+	toggle() {
+		this.props.toggleLoginWindowDispatch(this.props.loginWindowState)
+	}
 
-  handleChange = (event) =>{
-  	 this.setState({
-      username: event.target.value
-    });
-  }
- 
+	updateUsername = (event) =>{
+		this.setState({
+			username: event.target.value
+		});
+	}
+
+	updatePassword = (event) =>{
+		this.setState({
+			password: event.target.value
+		});
+	}
 
 
+	userLogin = async ( ) =>{
+		if(this.state.username.length != 0 && this.state.password.length != 0){
+			try {
+				await Auth.signIn(this.state.username, this.state.password);
+				this.setState({
+					userHasAuthenticated:true,
+					loginError:""
+				});
+				this.props.userLoginDispatch(this.state.username)
+				console.log("logged in")
+	 		} catch (e) {
+				// alert(e.message);
+				console.log("not logged int")
+				console.log(e.message)
+				this.setState({
+					loginError: e.message,
+					userHasAuthenticated:false
+				})
+			}
+		}
+	}
 
-  render() {
-    return (
-      <div>
-        <Modal isOpen={this.props.loginWindowState} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-          <ModalBody>
+
+	loginErrorDisplay = () =>{
+		if (this.state.loginError.length != 0 ) {
+			return(
+				<Alert color="danger">{this.state.loginError}</Alert>
+			)
+		}
+		else if (this.state.userHasAuthenticated == true){
+			return(
+				<Alert color="success">User logged in</Alert>
+			)
+		}
+	}
+
+
+	render() {
+		return (
+			<div>
+			<Modal isOpen={this.props.loginWindowState} toggle={this.toggle} className={this.props.className}>
+			<ModalHeader toggle={this.toggle}>React Web Store Login</ModalHeader>
+			<ModalBody>
 
 
 			<InputGroup>
-			<Input 
-	 			value={this.state.username} 
-				onChange={this.handleChange}
+				<Input 
+				value={this.state.username} 
+				onChange={this.updateUsername}
 				placeholder="username"
-			/>
+				/>
 			</InputGroup>
 
 
 			<InputGroup>
-				<Inputvalue={
-				this.state.username} 
-				onChange={this.handleChange}
+				<Input
+				type="password"
+				value={this.state.password} 
+				onChange={this.updatePassword}
 				placeholder="username" />
 			</InputGroup>
 
 
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.toggle}>login</Button>{' '}
-            <Button color="secondary" onClick={this.toggle}>register</Button>
-          </ModalFooter>
-        </Modal>
-      </div>
-    );
-  }
+			</ModalBody>
+			<ModalFooter>
+				{this.loginErrorDisplay()}
+				<Button color="success" onClick={this.userLogin}>login</Button>{' '}
+ 			</ModalFooter>
+			</Modal>
+
+
+			</div>
+
+			
+			);
+	}
 }
 
 
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleLoginWindowDispatch: (toggle) => dispatch(toggleLoginModal(toggle)),
+	toggleLoginWindowDispatch: (toggle) => dispatch(toggleLoginModal(toggle)),
+	userLoginDispatch: (userEmail) => dispatch(userLoginAction(userEmail)),
 })
 
 
 const mapStateToProps = state => {
-  return {
-    loginWindowState: state.loginWindowState,
-    loading:state.loading,
-  }
+	return {
+		loginWindowState: state.loginWindowState,
+		loading:state.loading,
+	}
 }
 export default LoginModal = connect(mapStateToProps,mapDispatchToProps)(LoginModal);
-  

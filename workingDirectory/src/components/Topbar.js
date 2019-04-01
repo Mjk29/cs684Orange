@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
 import Searchbar from './Searchbar.js'
-import { userLogin, changeUserLoginWindowStateAction } from '../actions'
+import { changeUserLoginWindowStateAction } from '../actions'
 import { connect } from 'react-redux';
 
 
@@ -130,7 +130,6 @@ import { connect } from 'react-redux';
 
 
 const mapDispatchToProps = (dispatch) => ({
-	userLogin: (text) => dispatch(userLogin(text)),
 	dispatchShowLoginWindow: (loginWindowState) => 
       dispatch(changeUserLoginWindowStateAction(loginWindowState)),
  })

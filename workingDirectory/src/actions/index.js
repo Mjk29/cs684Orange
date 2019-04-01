@@ -29,9 +29,9 @@ export const addItemToCart = (item) => ({
 });
 
 
-export const userLogin = (userName) => ({
+export const userLoginAction = (userName) => ({
   type: 'LOGIN_USER',
-  user:userName
+  userEmail:userName
 });
 
 export const changeUserLoginWindowStateAction = (loginState) => ({
@@ -43,6 +43,5 @@ export const toggleLoginModal = (toggleState) => ({
   type: 'TOGGLE_LOGIN_MODAL',
   loginState:toggleState
 });
-
 
 
