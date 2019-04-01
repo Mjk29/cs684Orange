@@ -145,7 +145,6 @@ function* fetchFromServer(event){
 
 
 
-
 // 
 // WATCHERS
 // 
@@ -174,6 +173,11 @@ function* fetchWatcher( ){
 	const data = yield takeLatest('FETCH_FROM_SERVER', fetchFromServer)
 }
 
+function* addItemToCartWatcher( ){
+	const data = yield takeLatest('ADD_ITEM_TO_CART', fetchFromServer)
+}
+
+
 
 
 
@@ -184,5 +188,6 @@ export default function* rootSaga( ) {
 		printWatcher(),
 		searchWatcher(),
 		fetchWatcher(),
+		addItemToCartWatcher(),
   ]);
 }
