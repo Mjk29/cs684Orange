@@ -77,8 +77,6 @@ const reducer = (state = {}, action) => {
     			loginWindowState: action.loginState.loginWindowState
 			}
 
-
-
 		case 'TOGGLE_LOGIN_MODAL':
 			console.log(state)
 			return{
@@ -86,15 +84,20 @@ const reducer = (state = {}, action) => {
 				loginWindowState: !state.loginWindowState
 		}
 
-
 		case 'LOGIN_USER':
 		console.log("HERE IS THE LOGIN USER ACTION")
 		console.log(action)
 			return{
 				...state,
 				// userEmail: action.toggleState.loginState
-			}
+		}
 
+		case 'TOGGLE_CART_MODAL':
+			console.log(state)
+			return{
+				...state,
+				cartModalState: !state.cartModalState
+		}
 
 
 

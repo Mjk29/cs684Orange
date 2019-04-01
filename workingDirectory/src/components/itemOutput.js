@@ -2,6 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import '../css/itemOutput.css';
 import { addItemToCart } from '../actions'
+import {
+	Container,
+	Row,
+	Button, 
+
+} from 'reactstrap'
 
 
 
@@ -37,17 +43,30 @@ export class Output_items extends Component{
 				
 				
 				<div className="contact-card">
-					<img style={{width: 150, height: 150}} src={item.imageUrl+".jpeg"}></img>
+					<Container fullHeight style={{"text-align":"center"}}>
+						<Row>
+							<img style={{width: 150, height: 150}} src={item.imageUrl+".jpeg"}></img>
+						</Row>
+						<Row>{'$'+item.price +'\n'}</Row>
+						<Row>{item.title +'\n'}</Row>
+						<Row>
+							<Button color="warning"  
+								// style={{backgroundColor: '#a9ed4b', color:'#000000'}}
+								onClick={() => 
+									this.props.addItemToCart(
+										{productId:item.productId,usItemId:item.usItemId}
+									)
+								}>
 
-					{'\n'+item.price +'\n'}
-					{item.title +'\n'} 
-					
-					<button onClick={() => 
-						this.props.addItemToCart(
-						{productId:item.productId,usItemId:item.usItemId}
-						)
+								add to cart</Button>
+						</Row>
 
-						}>add to cart</button>
+						
+						 
+						
+						
+					</Container>
+ 				
  				</div>
 				
 				

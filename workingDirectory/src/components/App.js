@@ -5,6 +5,8 @@ import React, {Component} from 'react';
 import Searchbar from './Searchbar.js'
 import ItemOutput from './itemOutput.js'
 import LoginModal from './LoginModal.js'
+import CartModal from './CartModal.js'
+
 
 
 import Topbar from './Topbar.js'
@@ -21,6 +23,7 @@ class App extends Component{
 	<div>
  	<Topbar />
  	<LoginModal />
+ 	<CartModal />
  	<ItemOutput />
  	</div>
 );

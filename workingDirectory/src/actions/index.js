@@ -44,4 +44,7 @@ export const toggleLoginModal = (toggleState) => ({
   loginState:toggleState
 });
 
-
+export const toggleCartModalAction = (toggleState) => ({
+  type: 'TOGGLE_CART_MODAL',
+  cartModalState:toggleState
+});

@@ -10,33 +10,35 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  DropdownItem,
+  Row,
+  Col,
+  Container,
+  Button
+
+  } from 'reactstrap';
 import Searchbar from './Searchbar.js'
-import { changeUserLoginWindowStateAction } from '../actions'
+import { changeUserLoginWindowStateAction, toggleCartModalAction } from '../actions'
 import { connect } from 'react-redux';
 
 
 
 
 
-  class Topbar extends React.Component {
-  constructor(props) {
-    super(props);
+class Topbar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.toggle = this.toggle.bind(this);
+		this.state = {
+			isOpen: false
+		};
+	}
+	toggle() {
+		this.setState({
+			isOpen: !this.state.isOpen
+		});
+	}
 
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      isOpen: false
-    };
-  }
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
-
-  	popupTest(){
-  		alert("asdasdas")
-  	}
 	showLoginWindow = () => {
 		this.props.dispatchShowLoginWindow({
 			loginWindowState:true,
@@ -44,7 +46,14 @@ import { connect } from 'react-redux';
 	}
 
 
-	accountState  () {
+	showShoppingCartToggle = () =>{
+		this.props.dispatchToggleCartModal({
+			cartModalState:!this.props.cartModalState,
+		})
+	}
+
+
+	accountState () {
 		console.log("her are the account stare proops")
 		console.log(this.props)
 
@@ -91,55 +100,62 @@ import { connect } from 'react-redux';
 
 
 
+	render() {
+		return (
+			<div>
+				<Navbar color="light" light expand="xl">
+					<Container fluid="true">
+						<NavbarToggler onClick={this.toggle} />
+						<Collapse isOpen={this.state.isOpen} navbar>
+					<Row>
+					<Nav className="ml-auto" navbar>
+							<Col sm={{ size: 2, order: 0, offset: 0 }} ><NavbarBrand >React Webstore</NavbarBrand></Col>
+							
+							<Col sm={{ size: 8, order: 1, offset: 2 }}>									
+								<NavItem>
+								<Searchbar />
+								</NavItem>
+							</Col>
 
+							<Col sm={{ size: 5, order: 2, offset: 1 }}>
+								 <Button outline color="success" onClick={this.showShoppingCartToggle}>    Shopping Cart    </Button> 
+							</Col>
 
-
-  render() {
-    return (
-      <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">reactstrap</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <Searchbar />
-              </NavItem>
-              <NavItem>
-                <NavLink href="/components/">Components</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-              </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Account Settings
-                </DropdownToggle>
-                 
-                  <div className="contacts">{this.accountState()}</div>
-
-              </UncontrolledDropdown>
-            </Nav>
-          </Collapse>
-        </Navbar>
-      </div>
-    );
-  }
+							<Col sm={{ size: 2, order: 3, offset: 0 }}>
+								<UncontrolledDropdown nav inNavbar>
+									<DropdownToggle nav caret>
+									Account Settings
+									</DropdownToggle>
+									<div className="contacts">{this.accountState()}</div>
+								</UncontrolledDropdown>
+							</Col>
+						</Nav>
+					</Row>
+					</Collapse>
+					</Container>
+				</Navbar>
+			</div>
+			);
+	}
 }
 
 
 
 const mapDispatchToProps = (dispatch) => ({
 	dispatchShowLoginWindow: (loginWindowState) => 
-      dispatch(changeUserLoginWindowStateAction(loginWindowState)),
+		dispatch(changeUserLoginWindowStateAction(loginWindowState)),
+	dispatchToggleCartModal: (cartModalState) =>
+		dispatch(toggleCartModalAction(cartModalState)),
+
+
  })
 
 const mapStateToProps = state => {
-  return {
-     userEmail: state.userEmail,
-     loading:state.loading,
+	return {
+		userEmail: state.userEmail,
+		loading:state.loading,
 
-   }
+	}
 }
 
 
