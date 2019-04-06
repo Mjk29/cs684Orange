@@ -12,10 +12,24 @@ import Amplify from "aws-amplify";
 import config from "./config";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-  
+
+
 const sagaMiddleware = createSagaMiddleware();
 
 
+
+// Setup local storage for userEmail key if not logged in
+if (localStorage.hasOwnProperty("userEmail")) {
+	// console.log("has a local email")
+}
+else{
+	// console.log("does not have local email")
+	// generate a random string for temp ID
+	localStorage.setItem("userEmail", Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
+}
+
+
+console.log(localStorage.name)
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
@@ -25,9 +39,10 @@ const store = createStore(
 		singleItem:[], 
 		multipleItems:[],
 		cartItems:{},
-		userEmail:"",
+		userEmail:localStorage.userEmail,
 		loginWindowState:false,
 		cartModalState:false,
+
 
 
 

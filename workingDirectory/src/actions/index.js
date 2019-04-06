@@ -53,3 +53,9 @@ export const removeItemFromCartAction = (itemKey) => ({
   type: 'REMOVE_ITEM_FROM_CART',
   itemkey:itemKey
 });
+
+
+export const updateCartDisplayAction = (userEmail) => ({
+  type: 'UPDATE_CART_DISPLAY',
+  userEmail:userEmail
+});

@@ -123,7 +123,6 @@ function* fetchFromServer(event){
 	// yield put actionType & returned adata
 	console.log("fetch fqrom server function")
 	console.log(event)
-	var dides = "asdas"
 	try{
 		const json = yield fetch('http://afsconnect1.njit.edu:5688', {
 				method: 'POST',
@@ -142,10 +141,11 @@ function* fetchFromServer(event){
 			.then(response => response.json(), );
 			console.log("FETCHED FROM SDERVER")
 			console.log(json)
+			console.log("FETCHED FROM SDERVER")
 			yield put({ type: event.searchObj.yieldAction, items: json, });
 		}
 		catch(err){
-			console.log("bummer")
+			console.log("fetch from server error")
 			yield put({ type: "POST_ERROR"});
 		}
 
@@ -188,6 +188,9 @@ function* addItemToCartWatcher( ){
 	const data = yield takeLatest('ADD_ITEM_TO_CART', fetchFromServer)
 }
 
+function* updateCartDisplayWatcher( ){
+	const data = yield takeLatest('UPDATE_CART_DISPLAY', fetchFromServer)
+}
 
 
 

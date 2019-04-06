@@ -29,7 +29,7 @@ const reducer = (state = {}, action) => {
 		case 'FETCH_FROM_SERVER':
 			console.log("Fetch from server reduer")
 			console.log(action)
-			if (action.searchObj.searchType == "fullItemInfo") {
+			if (action.searchObj.searchType == "addItemToCart") {
 				return{
 					...state
 				}
@@ -113,7 +113,8 @@ const reducer = (state = {}, action) => {
 			console.log(action.items[0])
 			return{
 				...state,
-				cartItems:{...state.cartItems, [action.items[0].productId]:2}
+				cartItems:{...state.cartItems, [action.items[0].productId]:2},
+				loading:false
 				// cartItems[action.items] = 1
 				// cartItems: state.cartItems.concat(action.items)
 
@@ -125,6 +126,11 @@ const reducer = (state = {}, action) => {
 				...state
 		}
 
+		case 'UPDATE_CART_DISPLAY':
+			console.log("UPDATE_CART_DISPLAYUPDATE_CART_DISPLAYUPDATE_CART_DISPLAY")
+			return{
+				...state,
+		}
 
 
 

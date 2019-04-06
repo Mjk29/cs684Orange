@@ -57,11 +57,11 @@ export class Output_items extends Component{
 									// console.log(this.refs[JSON.stringify({productId:item.productId, usItemId:item.usItemId})].state.value)
 										this.props.fetchFromServer({
 											searchType:"addItemToCart",
+											yieldAction:"UPDATE_CART_DISPLAY",
 											query:{
 												item:{productId:item.productId,usItemId:item.usItemId}, 
-												yieldAction:"ADD_ENTIRE_ITEM_DATA_TO_CART",
 												quantity:(this.refs[JSON.stringify({productId:item.productId, usItemId:item.usItemId})].state.value),
-												userEmail:"test@test.com",
+												userEmail:this.props.userEmail,
 											}
 										})
 										// {productId:item.productId,usItemId:item.usItemId}
@@ -128,6 +128,7 @@ const mapStateToProps = state => {
 		loading:state.loading,
 		singleItem:state.singleItem, 
 		multipleItems:state.multipleItems,
+		userEmail:state.userEmail
 	}
 }
 export default Output_items = connect(mapStateToProps,mapDispatchToProps)(Output_items);
