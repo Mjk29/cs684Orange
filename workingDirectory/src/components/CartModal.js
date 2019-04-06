@@ -22,7 +22,7 @@ import {
 
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { toggleCartModalAction, userLoginAction } from '../actions'
+import { toggleCartModalAction, userLoginAction, removeItemFromCartAction } from '../actions'
 import { bindActionCreators } from 'redux'
 import { Auth } from "aws-amplify";
 
@@ -96,6 +96,13 @@ class CartModal extends React.Component {
 			)
 		}
 	}
+
+	removeItemFromCart = (item) =>{
+		console.log("ASDASDASDASD")
+		console.log(item)
+	}
+
+
 // renders the item output for the cart modal
 // maps the items in store.cartItems and displays 
 	renderCartItems = () =>{
@@ -104,39 +111,42 @@ class CartModal extends React.Component {
 		
 		var cartPrice = 0.00
 		// adds up all item pricein the store
-		this.props.cartItems.map((item) => 
-			{cartPrice+=item.price}
-		)
-		// sets the totalprice state to the sum of the item prices
-		this.state.totalPrice = cartPrice
+		// this.props.cartItems.map((item) => 
+		// 	{cartPrice+=item.price}
+		// )
+		// // sets the totalprice state to the sum of the item prices
+		// this.state.totalPrice = cartPrice
 
-		const renderMultiple = this.props.cartItems.map((item) => 
-			<div>
-			<Row>
-			<Col md={{ size: 2, offset: 0 }} >
-				<img style={{width: 50, height: 50}} src={item.imageUrl+".jpeg"}></img>
-			</Col>
-			<Col md={{ size: 6, offset: 0 }} >
-				{item.title}
-				</Col>
-			<Col md={{ size: 2, offset: 0 }} >
-				{"$ "+item.price.toFixed(2)}
-			</Col>
-			<Col> 
-				<Button 
-				outline 
-				color="danger"
-				size="sm"
-				onClick={console.log("remove this item")}
-				>
-				Remove
-				</Button> 
-			</Col>
- 			</Row>
-			</div>
- 		)
- 		return renderMultiple
+		// const renderMultiple = this.props.cartItems.map((item) => 
+		// 	<div>
+		// 	<Row>
+		// 	<Col md={{ size: 2, offset: 0 }} >
+		// 		<img style={{width: 50, height: 50}} src={item.imageUrl+".jpeg"}></img>
+		// 	</Col>
+		// 	<Col md={{ size: 6, offset: 0 }} >
+		// 		{item.title}
+		// 		</Col>
+		// 	<Col md={{ size: 2, offset: 0 }} >
+		// 		{"$ "+item.price.toFixed(2)}
+		// 	</Col>
+		// 	<Col> 
+		// 		<Button 
+		// 		outline 
+		// 		color="danger"
+		// 		size="sm"
+		// 		onClick={() => this.props.removeItemFromCartDispatch({productId:item.productId, usItemId:item.usItemId})}
+		// 		>
+		// 		Remove
+		// 		</Button> 
+		// 	</Col>
+ 	// 		</Row>
+		// 	</div>
+ 	// 	)
+ 	// 	return renderMultiple
 	}
+
+
+
 
  	render() {
 		return (
@@ -172,6 +182,8 @@ class CartModal extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
 	toggleCartModalAction: (toggle) => dispatch(toggleCartModalAction(toggle)),
 	userLoginDispatch: (userEmail) => dispatch(userLoginAction(userEmail)),
+	removeItemFromCartDispatch: (itemKey) => dispatch(removeItemFromCartAction(itemKey)),
+
 })
 
 

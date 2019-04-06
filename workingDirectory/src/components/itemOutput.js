@@ -9,7 +9,7 @@ import {
 
 } from 'reactstrap'
 
-
+import NumericInput from 'react-numeric-input'; 
 
 export class Output_items extends Component{
 	constructor(props){
@@ -54,18 +54,24 @@ export class Output_items extends Component{
 							<Button color="warning"  
 								// style={{backgroundColor: '#a9ed4b', color:'#000000'}}
 								onClick={() => 
+									// console.log(this.refs[JSON.stringify({productId:item.productId, usItemId:item.usItemId})].state.value)
 										this.props.fetchFromServer({
-											query:{productId:item.productId,usItemId:item.usItemId}, 
-											searchType:"fullItemInfo",
-											yieldAction:"ADD_ENTIRE_ITEM_DATA_TO_CART"
+											searchType:"addItemToCart",
+											query:{
+												item:{productId:item.productId,usItemId:item.usItemId}, 
+												yieldAction:"ADD_ENTIRE_ITEM_DATA_TO_CART",
+												quantity:(this.refs[JSON.stringify({productId:item.productId, usItemId:item.usItemId})].state.value),
+												userEmail:"test@test.com",
+											}
 										})
 										// {productId:item.productId,usItemId:item.usItemId}
-									
-								}>
+								}>add to cart
+							</Button>
+							<NumericInput min={1} max={100} value={1} strict={true}
+								id={JSON.stringify({productId:item.productId, usItemId:item.usItemId})}
+								ref={JSON.stringify({productId:item.productId, usItemId:item.usItemId})}
+							/>
 
-
-
-								add to cart</Button>
 						</Row>
 					</Container>
  				

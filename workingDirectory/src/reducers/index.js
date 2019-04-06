@@ -110,16 +110,20 @@ const reducer = (state = {}, action) => {
 		case 'ADD_ENTIRE_ITEM_DATA_TO_CART':
 			console.log("HERE IS TE ADD_ENTIRE_ITEM_DATA_TO_CART ")
 			console.log(action)
-			console.log(action.items)
+			console.log(action.items[0])
 			return{
 				...state,
-				// cartItems:["asdasdasd"],
-				// loading:false,
-				cartItems: state.cartItems.concat(action.items)
+				cartItems:{...state.cartItems, [action.items[0].productId]:2}
+				// cartItems[action.items] = 1
+				// cartItems: state.cartItems.concat(action.items)
 
 		}
 
-
+		case 'REMOVE_ITEM_FROM_CART':
+			console.log(action)
+			return{
+				...state
+		}
 
 
 

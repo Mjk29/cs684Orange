@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var bodyParser = require('body-parser')
 var itemTableName = "684Items"
+var cartTableName = "684Cart"
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -21,7 +22,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
 	console.log("Got a POST request for the homepage");
 	// dbConnect(req,res)
-	console.log(req.body.query)
+	console.log(req.body )
 
 	switch(req.body.searchType) {
 		case "fullItemInfo":
@@ -35,6 +36,32 @@ app.post('/', function (req, res) {
 		case "multipleItemSearch":
 			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 50"
 			dbConnect(req,res, qString)
+			break;
+		
+
+		case "addItemToCart":
+			// qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 50"
+			console.log("add item to cart")
+			console.log(req.body)
+
+			qString = "INSERT INTO "+cartTableName+" (userEmail, productId, usItemId, quantity, `timestamp`) "
+				+"VALUES('"+req.body.query.userEmail
+				+"', '"+req.body.query.item.productId
+				+"', '"+req.body.query.item.usItemId
+				+"', '"+req.body.query.quantity
+				+"', CURRENT_TIMESTAMP);"
+
+			console.log(qString)
+			dbConnect(req,res, qString)
+			break;
+
+
+// INSERT INTO ma995.`684Cart`
+// (userEmail, productId, usItemId, quantity, `timestamp`)
+// VALUES('', '', '', 0, CURRENT_TIMESTAMP);
+
+
+
 		default:
 			return
 	} 

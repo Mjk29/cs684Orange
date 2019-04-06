@@ -24,7 +24,7 @@ const store = createStore(
 		loading:false,
 		singleItem:[], 
 		multipleItems:[],
-		cartItems:[],
+		cartItems:{},
 		userEmail:"",
 		loginWindowState:false,
 		cartModalState:false,
