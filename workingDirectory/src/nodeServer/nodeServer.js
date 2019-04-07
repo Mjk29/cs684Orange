@@ -55,11 +55,24 @@ app.post('/', function (req, res) {
 			dbConnect(req,res, qString)
 			break;
 
+		case "modifyCartToken":
+			qString	= 	"UPDATE "+cartTableName
+						+" SET userEmail='"+req.body.query.authEmail
+						+"' WHERE userEmail='"+req.body.query.tempToken
+						+"';"
+			console.log(qString)
+			dbConnect(req,res, qString)
+			break
 
-// INSERT INTO ma995.`684Cart`
-// (userEmail, productId, usItemId, quantity, `timestamp`)
-// VALUES('', '', '', 0, CURRENT_TIMESTAMP);
+// UPDATE ma995.`684Cart`
+// SET userEmail='newemail@ass.com'
+// WHERE userEmail='apj5m6hmbjle1nw91j0haj';
 
+
+// { searchType: 'modifyCartToken',
+//   query:
+//    { tempToken: 'apj5m6hmbjle1nw91j0haj',
+//      authEmail: 'admin@example.com' } }
 
 
 		default:

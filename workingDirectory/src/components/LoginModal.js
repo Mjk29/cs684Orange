@@ -69,7 +69,7 @@ class LoginModal extends React.Component {
 					authEmail:this.state.username
 				}, 
 				searchType:"modifyCartToken",
-				yieldAction:"FETCHED_MULTIPLE_ITMES"
+				yieldAction:"LOGIN_USER_UPDATE_LOCAL_VARS"
 				})
 	 		}
 

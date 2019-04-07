@@ -72,12 +72,29 @@ const reducer = (state = {}, action) => {
 		case 'LOGIN_USER':
 			console.log("login user action : ")
 			console.log(action)
-			localStorage.userEmail = action.userEmail.authEmail
+			// localStorage.userEmail = action.userEmail.authEmail
 			return{
 				...state, 
-    			userEmail: action.userEmail.authEmail
+    			userEmail: action.searchObj.query.authEmail,
+    			userHasAuthenticated:true,
 			}
 
+		case 'LOGIN_USER_UPDATE_LOCAL_VARS':
+			console.log("LOGIN_USER_UPDATE_LOCAL_VARS")
+			console.log(action)
+			console.log(action.items.affectedRows)
+			if (action.items.affectedRows >= 0) {
+				return{
+					...state,
+					// userHasAuthenticated:true,
+					// userEmail:
+				}
+			}
+			else{
+				return{
+					...state,
+				}
+			}
 
 		case 'CHANGE_USER_LOGIN_WINDOW_STATE':
 			console.log("CHANGE_USER_LOGIN_WINDOW_STATE : ")
