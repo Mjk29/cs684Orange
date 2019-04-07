@@ -64,15 +64,27 @@ app.post('/', function (req, res) {
 			dbConnect(req,res, qString)
 			break
 
-// UPDATE ma995.`684Cart`
-// SET userEmail='newemail@ass.com'
-// WHERE userEmail='apj5m6hmbjle1nw91j0haj';
+		case "fetchCartItems":
+			// qString=	"SELECT * FROM "+cartTableName
+			// 			+" WHERE userEmail='"+req.body.query+"';"
+			qString = 	"SELECT "	
+						+cartTableName+".productID, "
+						+cartTableName+".usItemId, "
+						+cartTableName+".quantity, "
+						+itemTableName+".price, "
+						+itemTableName+".imageUrl, "
+						+itemTableName+".title "
+						+"FROM "+itemTableName+" INNER JOIN "+cartTableName
+						+" ON "+itemTableName+".productId = "+cartTableName+".productID"
+						+" WHERE "+cartTableName+".userEmail = '"+req.body.query+"';"
 
 
-// { searchType: 'modifyCartToken',
-//   query:
-//    { tempToken: 'apj5m6hmbjle1nw91j0haj',
-//      authEmail: 'admin@example.com' } }
+			console.log(qString)
+			dbConnect(req,res, qString)
+			break
+
+
+						
 
 
 		default:

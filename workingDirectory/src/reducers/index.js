@@ -138,10 +138,13 @@ const reducer = (state = {}, action) => {
 				...state
 		}
 
-		case 'UPDATE_CART_DISPLAY':
-			console.log("UPDATE_CART_DISPLAYUPDATE_CART_DISPLAYUPDATE_CART_DISPLAY")
+		case 'FETCHED_CART_ITEMS':
+			console.log("FETCHED_CART_ITEMS")
+			console.log(action)
 			return{
 				...state,
+				loading:false,
+				cartItems:action.items
 		}
 
 
