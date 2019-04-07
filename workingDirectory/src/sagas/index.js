@@ -192,6 +192,9 @@ function* updateCartDisplayWatcher( ){
 	const data = yield takeLatest('UPDATE_CART_DISPLAY', fetchFromServer)
 }
 
+function* loginUserWatcher( ){
+	const data = yield takeLatest('LOGIN_USER', fetchFromServer)
+}
 
 
 
@@ -203,5 +206,6 @@ export default function* rootSaga( ) {
 		searchWatcher(),
 		fetchWatcher(),
 		addItemToCartWatcher(),
+		loginUserWatcher(),
   ]);
 }

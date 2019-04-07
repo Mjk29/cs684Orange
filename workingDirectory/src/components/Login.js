@@ -8,7 +8,7 @@ class Login extends Component {
 	constructor() {
 		super();
 		this.state = {
-			email: '',
+			email: '222',
 			password: ''
 		};
 
@@ -71,4 +71,25 @@ class Login extends Component {
   }
 }
 
-export default Login;
+
+const mapDispatchToProps = (dispatch) => ({
+	dispatchShowLoginWindow: (loginWindowState) => 
+		dispatch(changeUserLoginWindowStateAction(loginWindowState)),
+	dispatchToggleCartModal: (cartModalState) =>
+		dispatch(toggleCartModalAction(cartModalState)),
+
+
+ })
+
+const mapStateToProps = state => {
+	return {
+		userEmail: state.userEmail,
+		loading:state.loading,
+		userHasAuthenticated:state.userHasAuthenticated
+
+	}
+}
+
+
+
+export default Login = connect(mapStateToProps,mapDispatchToProps)(Login);

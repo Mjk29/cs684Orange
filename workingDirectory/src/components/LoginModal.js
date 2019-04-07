@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
 	InputGroup,
@@ -30,8 +29,8 @@ class LoginModal extends React.Component {
 			loading:false,
 			modal: false,
 			loginWindowState:false,
-			username:"",
-			password:"",
+			username:"admin@example.com",
+			password:"Passw0rd!",
 			loginError:"",
 			userHasAuthenticated:false
 		};
@@ -64,12 +63,20 @@ class LoginModal extends React.Component {
 					userHasAuthenticated:true,
 					loginError:""
 				});
-				this.props.userLoginDispatch(this.state.username)
-				console.log("logged in")
-	 		} catch (e) {
-				// alert(e.message);
-				console.log("not logged int")
-				console.log(e.message)
+				this.props.userLoginDispatch({
+					query:{
+					tempToken:localStorage.userEmail, 
+					authEmail:this.state.username
+				}, 
+				searchType:"modifyCartToken",
+				yieldAction:"FETCHED_MULTIPLE_ITMES"
+				})
+	 		}
+
+
+
+
+	 		catch (e) {
 				this.setState({
 					loginError: e.message,
 					userHasAuthenticated:false

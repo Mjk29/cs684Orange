@@ -18,15 +18,14 @@ const sagaMiddleware = createSagaMiddleware();
 
 
 
-// Setup local storage for userEmail key if not logged in
-if (localStorage.hasOwnProperty("userEmail")) {
-	// console.log("has a local email")
-}
-else{
-	// console.log("does not have local email")
-	// generate a random string for temp ID
-	localStorage.setItem("userEmail", Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
-}
+	// Setup local storage for userEmail key if not logged in
+	if (localStorage.hasOwnProperty("userEmail")) {
+		// console.log("has a local email")
+	}
+	else{
+		// console.log("does not have local email")		// generate a random string for temp ID
+		localStorage.setItem("userEmail", Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
+	}
 
 
 console.log(localStorage.name)
@@ -42,14 +41,13 @@ const store = createStore(
 		userEmail:localStorage.userEmail,
 		loginWindowState:false,
 		cartModalState:false,
-
-
+		userHasAuthenticated:false,
 
 
 	},
 	composeEnhancers(
 		applyMiddleware(sagaMiddleware,logger)
-		)
+	)
 );
 
 Amplify.configure({

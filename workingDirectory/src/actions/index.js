@@ -29,9 +29,10 @@ export const addItemToCart = (item) => ({
 });
 
 
-export const userLoginAction = (userName) => ({
+export const userLoginAction = (searchObj) => ({
   type: 'LOGIN_USER',
-  userEmail:userName
+  searchObj:searchObj,
+
 });
 
 export const changeUserLoginWindowStateAction = (loginState) => ({
@@ -59,3 +60,17 @@ export const updateCartDisplayAction = (userEmail) => ({
   type: 'UPDATE_CART_DISPLAY',
   userEmail:userEmail
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+

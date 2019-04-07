@@ -57,9 +57,9 @@ class Topbar extends React.Component {
 		console.log("her are the account stare proops")
 		console.log(this.props)
 
-		if (this.props.loading == false) {
+		if (this.props.loading === false) {
 			// user is logged in
-			if (this.props.userEmail.length != 0) {
+			if (this.props.userHasAuthenticated === true) {
 				return(
 					<DropdownMenu right>
 						<DropdownItem>
@@ -76,7 +76,7 @@ class Topbar extends React.Component {
 				)
 			}
 			// user is not logged in
-			else if (this.props.userEmail.length == 0) {
+			else if (this.props.userHasAuthenticated === false) {
 				return(
 					<DropdownMenu right>
 						<DropdownItem  onClick={this.showLoginWindow}>
@@ -154,6 +154,7 @@ const mapStateToProps = state => {
 	return {
 		userEmail: state.userEmail,
 		loading:state.loading,
+		userHasAuthenticated:state.userHasAuthenticated
 
 	}
 }
