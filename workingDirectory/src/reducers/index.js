@@ -29,17 +29,29 @@ const reducer = (state = {}, action) => {
 		case 'FETCH_FROM_SERVER':
 			console.log("Fetch from server reduer")
 			console.log(action)
-			if (action.searchObj.searchType == "addItemToCart") {
-				return{
-					...state
-				}
+			
+			switch (action.searchObj.searchType){
+				case "fetchCartItems":
+					return{...state }
+				case "addItemToCart":
+					return{...state }
+				default:
+					return{
+						...state, 
+						loading: true
+					}
 			}
-			else{
-				return{
-					...state, 
-					loading: true
-				}
-			}
+			// if (action.searchObj.searchType == "addItemToCart") {
+			// 	return{
+			// 		...state
+			// 	}
+			// }
+			// else{
+			// 	return{
+			// 		...state, 
+			// 		loading: true
+			// 	}
+			// }
 
 		case 'FETCHED_SINGLE_ITEM':
 			return{...state, 

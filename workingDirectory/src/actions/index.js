@@ -52,7 +52,7 @@ export const toggleCartModalAction = (toggleState) => ({
 
 export const removeItemFromCartAction = (itemKey) => ({
   type: 'REMOVE_ITEM_FROM_CART',
-  itemkey:itemKey
+  searchObj:itemKey
 });
 
 

@@ -90,75 +90,65 @@ class CartModal extends React.Component {
 			const renderMultiple = this.props.cartItems.map((item) => 
 			<div>
 			<Row>
-			<Col md={{ size: 2, offset: 0 }} >
-				<img style={{width: 50, height: 50}} src={item.imageUrl+".jpeg"}></img>
-			</Col>
-			<Col md={{ size: 6, offset: 0 }} >
-				{item.title}
+				<Col md={{ size: '1', offset: 0 }} >
+					<img style={{width: 50, height: 50}} src={item.imageUrl+".jpeg"}></img>
 				</Col>
-			<Col md={{ size: 2, offset: 0 }} >
-				{"$ "+item.price.toFixed(2)}
-			</Col>
-			<Col> 
-				<Button 
-				outline 
-				color="danger"
-				size="sm"
-				onClick={() => this.props.removeItemFromCartDispatch({productId:item.productId, usItemId:item.usItemId})}
-				>
-				Remove
-				</Button> 
-			</Col>
+
+				<Col md={{ size: '7', offset: 0 }} >
+					{item.title}
+				</Col>
+				
+				<Col>
+					<Row md={{ size: '.5', offset: 0 }} >
+						{"Price: $"+item.price.toFixed(2)}
+					</Row>
+
+					<Row md={{ size: '.5', offset: 0 }} >
+						{"Quantity: "+item.quantity}
+					</Row>
+ 				</Col>
+
+				<Col md={{ size: '.5', offset: 0 }} >
+					{"Subtotal: $"+(item.quantity*item.price).toFixed(2)}
+				</Col>
+
+				<Col md={{ size: '1', offset: 0 }} > 
+					<Button 
+						outline 
+						color="danger"
+						size="sm"
+						onClick={() => 
+							this.props.removeItemFromCartDispatch({
+								searchType:"removeItemFromCart",
+								yieldAction:"UPDATE_CART_DISPLAY",
+								query:{
+									userEmail:this.props.userEmail,
+									productId:item.productID,
+									usItemId:item.usItemId
+								}
+						})}
+						>
+						Remove
+					</Button> 
+				</Col>
  			</Row>
+ 			<Row>
+ 				<Col>
+ 					<hr
+						style={{
+						color: "#ffffff",
+						backgroundColor: "#ffffff",
+						height: 1
+						}}
+					/>
+				</Col>
+			</Row>
 			</div>
- 
-
-
-
-
  			)
  			 		return renderMultiple
 
 		}
-		// return(<div>asdasd</div>)
-		// adds up all item pricein the store
-		// this.props.cartItems.map((item) => 
-		// 	console.log("ASDASDASD")
-		// 	// {cartPrice+=item.price}
-		// )
-		// sets the totalprice state to the sum of the item prices
-		// this.state.totalPrice = cartPrice
-
-		// const renderMultiple = this.props.cartItems.map((item) => 
-		// 	<div>
-		// 	<Row>
-		// 	<Col md={{ size: 2, offset: 0 }} >
-		// 		<img style={{width: 50, height: 50}} src={item.imageUrl+".jpeg"}></img>
-		// 	</Col>
-		// 	<Col md={{ size: 6, offset: 0 }} >
-		// 		{item.title}
-		// 		</Col>
-		// 	<Col md={{ size: 2, offset: 0 }} >
-		// 		{"$ "+item.price.toFixed(2)}
-		// 	</Col>
-		// 	<Col> 
-		// 		<Button 
-		// 		outline 
-		// 		color="danger"
-		// 		size="sm"
-		// 		onClick={() => this.props.removeItemFromCartDispatch({productId:item.productId, usItemId:item.usItemId})}
-		// 		>
-		// 		Remove
-		// 		</Button> 
-		// 	</Col>
- 	// 		</Row>
-		// 	</div>
- 	// 	)
-
-
- 
-
- 		// return renderMultiple
+	
 	}
 
 
@@ -169,7 +159,7 @@ class CartModal extends React.Component {
 			<div>
 			<Modal 
 				size="xl"
-	 			isOpen={this.props.cartModalState} 
+ 	 			isOpen={this.props.cartModalState} 
 				toggle={this.toggle} 
 				className={this.props.className}
 			>
@@ -198,7 +188,7 @@ class CartModal extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
 	toggleCartModalAction: (toggle) => dispatch(toggleCartModalAction(toggle)),
 	userLoginDispatch: (userEmail) => dispatch(userLoginAction(userEmail)),
-	removeItemFromCartDispatch: (itemKey) => dispatch(removeItemFromCartAction(itemKey)),
+	removeItemFromCartDispatch: (searchObj) => dispatch(removeItemFromCartAction(searchObj)),
 	fetchFromServer: (text) => dispatch(fetchFromServer(text)),
 
 })

@@ -196,6 +196,10 @@ function* loginUserWatcher( ){
 	const data = yield takeLatest('LOGIN_USER', fetchFromServer)
 }
 
+function* removeItemWatcher( ){
+	const data = yield takeLatest('REMOVE_ITEM_FROM_CART', fetchFromServer)
+}
+
 
 
 export default function* rootSaga( ) {
@@ -207,5 +211,6 @@ export default function* rootSaga( ) {
 		fetchWatcher(),
 		addItemToCartWatcher(),
 		loginUserWatcher(),
+		removeItemWatcher(),
   ]);
 }

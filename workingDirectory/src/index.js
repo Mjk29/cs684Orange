@@ -49,7 +49,7 @@ const store = createStore(
 
 	},
 	composeEnhancers(
-		applyMiddleware(sagaMiddleware,logger)
+		applyMiddleware(sagaMiddleware)
 	)
 );
 

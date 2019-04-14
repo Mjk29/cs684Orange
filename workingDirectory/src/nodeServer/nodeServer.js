@@ -27,15 +27,15 @@ app.post('/', function (req, res) {
 	switch(req.body.searchType) {
 		case "fullItemInfo":
 			qString = "SELECT * FROM "+itemTableName+" WHERE productId='"+req.body.query.productId+"' AND usItemId='"+req.body.query.usItemId+"'"
-			dbConnect(req,res, qString)
+			dbConnect(req,res, qString, req.body)
 			break;
 		case "autoCompleteSearchBar":
 			qString = "SELECT productId, usItemId, title FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 20"
-			dbConnect(req,res, qString)
+			dbConnect(req,res, qString, req.body)
 			break;
 		case "multipleItemSearch":
 			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 50"
-			dbConnect(req,res, qString)
+			dbConnect(req,res, qString, req.body)
 			break;
 		
 
@@ -52,7 +52,7 @@ app.post('/', function (req, res) {
 				+"', CURRENT_TIMESTAMP);"
 
 			console.log(qString)
-			dbConnect(req,res, qString)
+			dbConnect(req,res, qString, req.body)
 			break;
 
 		case "modifyCartToken":
@@ -61,7 +61,7 @@ app.post('/', function (req, res) {
 						+"' WHERE userEmail='"+req.body.query.tempToken
 						+"';"
 			console.log(qString)
-			dbConnect(req,res, qString)
+			dbConnect(req,res, qString, req.body)
 			break
 
 		case "fetchCartItems":
@@ -77,11 +77,26 @@ app.post('/', function (req, res) {
 						+"FROM "+itemTableName+" INNER JOIN "+cartTableName
 						+" ON "+itemTableName+".productId = "+cartTableName+".productID"
 						+" WHERE "+cartTableName+".userEmail = '"+req.body.query+"';"
-
-
 			console.log(qString)
-			dbConnect(req,res, qString)
+			try{
+				returnMsg = dbConnect(req,res, qString, req.body)
+				console.log(returnMsg)
+			}
+			catch(error){
+				console.log("there was an error")
+				console.log(error)
+			}
 			break
+
+		case "removeItemFromCart":
+			qString = "DELETE FROM "+cartTableName+" "
+				+"WHERE userEmail='"+req.body.query.userEmail+"' "
+				+"AND productId='"+req.body.query.productId+"' "
+				+"AND usItemId='"+req.body.query.usItemId+"';"
+				console.log(qString)
+			dbConnect(req,res, qString, req.body)
+			break
+
 
 
 						
@@ -102,13 +117,44 @@ http.listen(5688, function(){
 
 
 
+function dbErrorHandler(returnedErrorMessage, originalBody, res,req){
+	// console.log("handlingDupoesincart")
+	// console.log(returnedErrorMessage.errno)
+	// console.log(originalBody)
+	console.log("=--------------------------------------=")
+
+
+	switch(returnedErrorMessage.errno){
+		case 1062:
+			console.log("duplicate cart entry")
+				console.log(originalBody)
+				if (originalBody.searchType == "modifyCartToken") {return}
+				qString = "UPDATE "+cartTableName
+					+" SET quantity = quantity + "+originalBody.query.quantity+" "
+					+"WHERE userEmail='"+originalBody.query.userEmail
+					+"' AND productId='"+originalBody.query.item.productId
+					+"' AND usItemId='"+originalBody.query.item.usItemId+"';"
+				console.log(qString)
+				dbConnect(req,res, qString, originalBody)
+				return
+		default:
+			console.log(returnedErrorMessage)
+			return
+
+	}
+
+}
 
 
 
-function dbConnect(req,res, qString){
+
+
+
+
+function dbConnect(req,res, qString, originalBody){
 	console.log("db function")
 	console.log(qString)
-	var mysql = require('mysql')
+	var mysql = require('mysql') 
 	var connection = mysql.createConnection({
 	  host     : 'sql.njit.edu',
 	  user     : 'ma995',
@@ -119,9 +165,14 @@ function dbConnect(req,res, qString){
 	connection.connect()
 
 	connection.query(qString, function (err, rows, fields) {
-	  if (err) throw err
+	if (err){
+ 		// console.log(err)
+ 		dbErrorHandler(err, originalBody, res, req)
+ 		return
 
-	  console.log(rows)
+	}
+
+	console.log(rows)
 	res.send(rows)
 	})
 

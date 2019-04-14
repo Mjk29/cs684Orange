@@ -18,14 +18,14 @@ import {
 
   } from 'reactstrap';
 import Searchbar from './Searchbar.js'
-import { changeUserLoginWindowStateAction, toggleCartModalAction } from '../actions'
+import { changeUserLoginWindowStateAction, toggleCartModalAction,fetchFromServer } from '../actions'
 import { connect } from 'react-redux';
 
 
 
 
 
-class Topbar extends React.Component {
+export class Topbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggle = this.toggle.bind(this);
@@ -47,6 +47,11 @@ class Topbar extends React.Component {
 
 
 	showShoppingCartToggle = () =>{
+		this.props.fetchFromServer({
+			query:this.props.userEmail, 
+			searchType:"fetchCartItems",
+			yieldAction:"FETCHED_CART_ITEMS"
+		})
 		this.props.dispatchToggleCartModal({
 			cartModalState:!this.props.cartModalState,
 		})
@@ -146,6 +151,8 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(changeUserLoginWindowStateAction(loginWindowState)),
 	dispatchToggleCartModal: (cartModalState) =>
 		dispatch(toggleCartModalAction(cartModalState)),
+	fetchFromServer: (text) => dispatch(fetchFromServer(text)),
+
 
 
  })
