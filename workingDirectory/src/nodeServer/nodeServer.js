@@ -56,13 +56,34 @@ app.post('/', function (req, res) {
 			break;
 
 		case "modifyCartToken":
-			qString	= 	"UPDATE "+cartTableName
-						+" SET userEmail='"+req.body.query.authEmail
-						+"' WHERE userEmail='"+req.body.query.tempToken
-						+"';"
+			// qString	= 	"UPDATE "+cartTableName
+			// 			+" SET userEmail='"+req.body.query.authEmail
+			// 			+"' WHERE userEmail='"+req.body.query.tempToken
+			// 			+"';"
+			// qString=
+			// 	"START TRANSACTION; "
+			// 	+"insert into "+cartTableName+" (userEmail, productId, usItemId, quantity, timestamp) "
+			// 	+"select '"+req.body.query.authEmail+"', productId, usItemId, quantity, timestamp "
+			// 	+"from "+cartTableName+" o "
+			// 	+"where o.userEmail = '"+req.body.query.tempToken+"' "
+			// 	+"on duplicate key update quantity = o.quantity + "
+			// 	+"(SELECT quantity from "+cartTableName+" where "+cartTableName+".userEmail = '"+req.body.query.authEmail+"'); "
+			// 	+"delete from "+cartTableName+" "
+			// 	+"where "+cartTableName+".userEmail = '"+req.body.query.tempToken+"'; "
+			// 	+"COMMIT;"
+			qString = "CALL modifyCartToken('"+req.body.query.authEmail+"', '"+req.body.query.tempToken+"');"
 			console.log(qString)
 			dbConnect(req,res, qString, req.body)
 			break
+
+
+
+
+
+
+
+
+
 
 		case "fetchCartItems":
 			// qString=	"SELECT * FROM "+cartTableName

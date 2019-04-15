@@ -1,0 +1,22 @@
+CREATE PROCEDURE modifyCartToken(IN userEmailIn VARCHAR(255), IN userTokenIn VARCHAR(255))
+ BEGIN
+ insert into ma995.`684Cart` (userEmail, productId, usItemId, quantity)
+    select userEmailIn, productId, usItemId, quantity
+    from ma995.`684Cart` o
+    where o.userEmail = userTokenIn
+    on duplicate key update quantity = o.quantity + 
+   (SELECT quantity from ma995.`684Cart` b
+  		where b.userEmail = userEmailIn
+  		AND   b.productId = o.productId
+  	);
+delete from ma995.`684Cart`
+    where ma995.`684Cart`.userEmail = userTokenIn;
+ END;
+
+
+
+
+DROP PROCEDURE modifyCartToken;
+
+
+CALL modifyCartToken('admin@example.com', 'apj5m6hmbjle1nw91j0haj');
