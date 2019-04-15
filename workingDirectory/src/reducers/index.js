@@ -159,6 +159,13 @@ const reducer = (state = {}, action) => {
 				cartItems:action.items
 		}
 
+		// case 'LOGOUT_USER':
+		// 	return{
+		// 		...state,
+		// 		userEmail:"undefined",
+		// 		userHasAuthenticated:false,
+		// 	}
+
 
 
 

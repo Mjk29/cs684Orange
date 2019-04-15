@@ -57,6 +57,11 @@ export class Topbar extends React.Component {
 		})
 	}
 
+	logoutUser = () =>{
+		localStorage.setItem("userEmail", "undefined")
+		window.location.reload();
+	}
+
 
 	accountState () {
 		console.log("her are the account stare proops")
@@ -92,8 +97,8 @@ export class Topbar extends React.Component {
 							Register
 						</DropdownItem>
 							<DropdownItem divider />
-						<DropdownItem>
-							Reset
+						<DropdownItem onClick={this.logoutUser}>
+							Logout
 						</DropdownItem>
  					</DropdownMenu>
 				)
