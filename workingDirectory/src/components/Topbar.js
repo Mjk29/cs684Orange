@@ -65,6 +65,7 @@ export class Topbar extends React.Component {
 		if (this.props.loading === false) {
 			// user is logged in
 			if (this.props.userHasAuthenticated === true) {
+				localStorage.setItem("userEmail", this.props.userEmail)
 				return(
 					<DropdownMenu right>
 						<DropdownItem>
