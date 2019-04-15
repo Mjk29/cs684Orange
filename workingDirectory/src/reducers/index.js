@@ -85,6 +85,7 @@ const reducer = (state = {}, action) => {
 			console.log("login user action : ")
 			console.log(action)
 			// localStorage.userEmail = action.userEmail.authEmail
+			localStorage.setItem("previouslyLoggedIn", true)
 			return{
 				...state, 
     			userEmail: action.searchObj.query.authEmail,
@@ -159,12 +160,6 @@ const reducer = (state = {}, action) => {
 				cartItems:action.items
 		}
 
-		// case 'LOGOUT_USER':
-		// 	return{
-		// 		...state,
-		// 		userEmail:"undefined",
-		// 		userHasAuthenticated:false,
-		// 	}
 
 
 

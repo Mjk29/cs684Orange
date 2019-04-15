@@ -59,6 +59,7 @@ export class Topbar extends React.Component {
 
 	logoutUser = () =>{
 		localStorage.setItem("userEmail", "undefined")
+		localStorage.setItem("previouslyLoggedIn", false)
 		window.location.reload();
 	}
 
@@ -107,6 +108,19 @@ export class Topbar extends React.Component {
 	}
 
 
+	displayUserName (){
+		if (localStorage.previouslyLoggedIn === "true"){
+ 			return(
+				<div>{this.props.userEmail}</div>
+			)
+		}
+		else{
+			return(
+				<div>guest</div>
+			)
+		}
+	}
+
 
 
 
@@ -120,19 +134,25 @@ export class Topbar extends React.Component {
 						<Collapse isOpen={this.state.isOpen} navbar>
 					<Row>
 					<Nav className="ml-auto" navbar>
-							<Col sm={{ size: 2, order: 0, offset: 0 }} ><NavbarBrand >React Webstore</NavbarBrand></Col>
+							<Col sm={{ size: 2, offset: 0 }} ><NavbarBrand >React Webstore</NavbarBrand></Col>
 							
-							<Col sm={{ size: 8, order: 1, offset: 2 }}>									
+							<Col sm={{ size: 8, offset: 0 }}>									
 								<NavItem>
 								<Searchbar />
 								</NavItem>
 							</Col>
 
-							<Col sm={{ size: 5, order: 2, offset: 1 }}>
+							<Col sm={{ size: 2, offset: 0 }}>
 								 <Button outline color="success" onClick={this.showShoppingCartToggle}>    Shopping Cart    </Button> 
 							</Col>
 
-							<Col sm={{ size: 2, order: 3, offset: 0 }}>
+							<Col sm={{ size: 3, offset: 1 }}>
+								<Row>Hello</Row>
+								<Row>{this.displayUserName()}</Row>
+								 
+							</Col>
+
+							<Col sm={{ size: 2, offset: 0 }}>
 								<UncontrolledDropdown nav inNavbar>
 									<DropdownToggle nav caret>
 									Account Settings
@@ -167,7 +187,8 @@ const mapStateToProps = state => {
 	return {
 		userEmail: state.userEmail,
 		loading:state.loading,
-		userHasAuthenticated:state.userHasAuthenticated
+		userHasAuthenticated:state.userHasAuthenticated,
+		previouslyLoggedIn:state.previouslyLoggedIn,
 
 	}
 }

@@ -17,17 +17,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const sagaMiddleware = createSagaMiddleware();
 
 
-
+	var previouslyLoggedIn = false
 	// Setup local storage for userEmail key if not logged in
 	if (localStorage.hasOwnProperty("userEmail")) {
 		// console.log("has a local email")
 		if (localStorage.userEmail === "undefined") {
 			localStorage.setItem("userEmail", Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
 		}
+		
 	}
 	else{
 		// console.log("does not have local email")		// generate a random string for temp ID
 		localStorage.setItem("userEmail", Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
+		
 	}
 
 
@@ -45,6 +47,7 @@ const store = createStore(
 		loginWindowState:false,
 		cartModalState:false,
 		userHasAuthenticated:false,
+		previouslyLoggedIn:previouslyLoggedIn,
 
 
 	},
