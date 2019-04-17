@@ -117,7 +117,7 @@ function fetchToServer(searchObject){
 
 
 
-function* fetchFromServer(event){
+export function* fetchFromServer(event){
 	// Event = {searchType, query, actionType}
 	// Fetch to server with searchType & query
 	// yield put actionType & returned adata

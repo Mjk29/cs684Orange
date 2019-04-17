@@ -20,9 +20,9 @@ app.get('/', function (req, res) {
 })
 
 app.post('/', function (req, res) {
-	console.log("Got a POST request for the homepage");
+	// console.log("Got a POST request for the homepage");
 	// dbConnect(req,res)
-	console.log(req.body )
+	// console.log(req )
 
 	switch(req.body.searchType) {
 		case "fullItemInfo":
@@ -41,8 +41,8 @@ app.post('/', function (req, res) {
 
 		case "addItemToCart":
 			// qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 50"
-			console.log("add item to cart")
-			console.log(req.body)
+			// console.log("add item to cart")
+			// console.log(req.body)
 
 			qString = "INSERT INTO "+cartTableName+" (userEmail, productId, usItemId, quantity, `timestamp`) "
 				+"VALUES('"+req.body.query.userEmail
@@ -51,7 +51,7 @@ app.post('/', function (req, res) {
 				+"', '"+req.body.query.quantity
 				+"', CURRENT_TIMESTAMP);"
 
-			console.log(qString)
+			// console.log(qString)
 			dbConnect(req,res, qString, req.body)
 			break;
 
@@ -72,7 +72,7 @@ app.post('/', function (req, res) {
 			// 	+"where "+cartTableName+".userEmail = '"+req.body.query.tempToken+"'; "
 			// 	+"COMMIT;"
 			qString = "CALL modifyCartToken('"+req.body.query.authEmail+"', '"+req.body.query.tempToken+"');"
-			console.log(qString)
+			// console.log(qString)
 			dbConnect(req,res, qString, req.body)
 			break
 
@@ -98,14 +98,14 @@ app.post('/', function (req, res) {
 						+"FROM "+itemTableName+" INNER JOIN "+cartTableName
 						+" ON "+itemTableName+".productId = "+cartTableName+".productID"
 						+" WHERE "+cartTableName+".userEmail = '"+req.body.query+"';"
-			console.log(qString)
+			// console.log(qString)
 			try{
 				returnMsg = dbConnect(req,res, qString, req.body)
-				console.log(returnMsg)
+				// console.log(returnMsg)
 			}
 			catch(error){
-				console.log("there was an error")
-				console.log(error)
+				// console.log("there was an error")
+				// console.log(error)
 			}
 			break
 
@@ -114,7 +114,7 @@ app.post('/', function (req, res) {
 				+"WHERE userEmail='"+req.body.query.userEmail+"' "
 				+"AND productId='"+req.body.query.productId+"' "
 				+"AND usItemId='"+req.body.query.usItemId+"';"
-				console.log(qString)
+				// console.log(qString)
 			dbConnect(req,res, qString, req.body)
 			break
 
@@ -142,24 +142,24 @@ function dbErrorHandler(returnedErrorMessage, originalBody, res,req){
 	// console.log("handlingDupoesincart")
 	// console.log(returnedErrorMessage.errno)
 	// console.log(originalBody)
-	console.log("=--------------------------------------=")
+	// console.log("=--------------------------------------=")
 
 
 	switch(returnedErrorMessage.errno){
 		case 1062:
-			console.log("duplicate cart entry")
-				console.log(originalBody)
+			// console.log("duplicate cart entry")
+				// console.log(originalBody)
 				if (originalBody.searchType == "modifyCartToken") {return}
 				qString = "UPDATE "+cartTableName
 					+" SET quantity = quantity + "+originalBody.query.quantity+" "
 					+"WHERE userEmail='"+originalBody.query.userEmail
 					+"' AND productId='"+originalBody.query.item.productId
 					+"' AND usItemId='"+originalBody.query.item.usItemId+"';"
-				console.log(qString)
+				// console.log(qString)
 				dbConnect(req,res, qString, originalBody)
 				return
 		default:
-			console.log(returnedErrorMessage)
+			// console.log(returnedErrorMessage)
 			return
 
 	}
@@ -168,13 +168,14 @@ function dbErrorHandler(returnedErrorMessage, originalBody, res,req){
 
 
 
-
+var counter = 0;
 
 
 
 function dbConnect(req,res, qString, originalBody){
-	console.log("db function")
-	console.log(qString)
+	// console.log("db function")
+	// console.log(qString)
+	console.log("got request #"+counter++)
 	var mysql = require('mysql') 
 	var connection = mysql.createConnection({
 	  host     : 'sql.njit.edu',
@@ -193,8 +194,9 @@ function dbConnect(req,res, qString, originalBody){
 
 	}
 
-	console.log(rows)
-	res.send(rows)
+	// console.log(rows)
+	// console.log(originalBody)
+	res.send(JSON.stringify({rows:rows, original:originalBody}))
 	})
 
 	connection.end()

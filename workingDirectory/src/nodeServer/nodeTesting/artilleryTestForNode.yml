@@ -1,0 +1,24 @@
+config:
+  target: "http://afsconnect1.njit.edu:5688"
+  phases:
+    - duration: 5
+      arrivalRate: 100
+    # - duration: 10
+    #   arrivalRate: 5
+    #   rampTo: 50
+    # - duration: 10
+    #   arrivalRate: 50
+scenarios:
+  - name: "Search and buy"
+    flow:
+      - post:
+          url: "/"
+          body: "{\"query\":\"Cokem International Preown 360 Halo: Combat Evolved Anniv\",\"searchType\":\"multipleItemSearch\",\"yieldAction\":\"FETCHED_MULTIPLE_ITMES\"}"
+          method: 'POST'
+          mode: "cors"
+          dataType: 'jsonp'
+          credentials: "same-origin"
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          }
