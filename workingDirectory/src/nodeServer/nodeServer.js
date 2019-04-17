@@ -80,15 +80,6 @@ app.post('/', function (req, res) {
 			dbConnect(req,res, qString, req.body)
 			break
 
-
-
-
-
-
-
-
-
-
 		case "fetchCartItems":
 			// qString=	"SELECT * FROM "+cartTableName
 			// 			+" WHERE userEmail='"+req.body.query+"';"
@@ -121,6 +112,16 @@ app.post('/', function (req, res) {
 				// console.log(qString)
 			dbConnect(req,res, qString, req.body)
 			break
+
+
+
+		case "checkoutItems":
+			console.log(req.body.query)
+			qString = "CALL createTransactions('"+req.body.query+"');"
+			dbConnect(req,res, qString, req.body)
+			break
+
+
 
 		default:
 			res.send(JSON.stringify({error:"bad query type",}))

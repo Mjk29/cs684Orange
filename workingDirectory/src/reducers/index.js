@@ -35,6 +35,8 @@ const reducer = (state = {}, action) => {
 					return{...state }
 				case "addItemToCart":
 					return{...state }
+				case "checkoutItems":
+					return{...state }
 				default:
 					return{
 						...state, 
@@ -161,7 +163,10 @@ const reducer = (state = {}, action) => {
 		}
 
 
-
+		case 'CHECKOUT_ITEMS':
+			return{
+				...state
+			}
 
 
 

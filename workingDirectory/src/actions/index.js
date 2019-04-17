@@ -61,6 +61,10 @@ export const updateCartDisplayAction = (userEmail) => ({
   userEmail:userEmail
 });
 
+export const checkoutItems = (userEmail) => ({
+  type: 'CHECKOUT_ITEMS',
+  userEmail:userEmail
+});
 
 
 

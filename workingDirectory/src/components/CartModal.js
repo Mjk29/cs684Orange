@@ -152,6 +152,15 @@ class CartModal extends React.Component {
 	}
 
 
+	checkoutItems = () =>{
+		this.props.fetchFromServer({
+			query:this.props.userEmail, 
+			searchType:"checkoutItems",
+			yieldAction:"CHECKOUT_ITEMS_RETURN"
+		})
+	}
+
+
 
 
  	render() {
@@ -172,8 +181,22 @@ class CartModal extends React.Component {
 			</Container>
 			</ModalBody>
 			<ModalFooter>
-				{/* renders the total cart price */}
- 				{"Total:    $ "+this.state.totalPrice.toFixed(2)}
+				<Row  >
+					<h4>
+					{/* renders the total cart price */}
+	 				{"Total:    $ "+this.state.totalPrice.toFixed(2)}
+	 				</h4>
+	 				</Row>
+	 				<Row  >
+	 				<Button 
+							outline 
+							color="info"
+							size="lg"
+							onClick={()=>this.checkoutItems()}
+							>
+							Checkout
+						</Button> 
+				</Row>
  			</ModalFooter>
 			</Modal>
 
