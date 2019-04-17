@@ -141,8 +141,9 @@ export function* fetchFromServer(event){
 			.then(response => response.json(), );
 			console.log("FETCHED FROM SDERVER")
 			console.log(json)
+			console.log(json.rows)
 			console.log("FETCHED FROM SDERVER")
-			yield put({ type: event.searchObj.yieldAction, items: json, });
+			yield put({ type: event.searchObj.yieldAction, items: json.rows, });
 		}
 		catch(err){
 			console.log("fetch from server error")

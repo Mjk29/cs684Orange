@@ -98,7 +98,7 @@ export class Searchbar extends Component {
 		.then((responseData) => { 
 			console.log(responseData);
 			// return responseData			
-			this.setState({options : responseData})
+			this.setState({options : responseData.rows})
 			console.log(this.state.options)
 			this.setState({isLoading : false})
 		})

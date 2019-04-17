@@ -61,38 +61,47 @@ function serverTester(queryArray, expectedResponseArray){
  						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(parsed.original.queryNumber+" : No Results Found"))
  						return
  					}
-	 			for(Qobj in queryArray){
-	 				if (parsed["error"] != undefined) {
-	 					console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" : "+parsed.error))
-	 					return
- 					}
-	 				// Find expected response for this query
-	 				if(queryArray[Qobj].query == parsed.original.query){
-	 					if((parsed.rows[0].productId !== expectedResponseArray[Qobj][0].productId)){
-	 						console.log(chalk.redBright.bgBlack('  \u03A7  ') +chalk.redBright(Qobj+" Failed mismatched productId"))
-	 						passed = false
+ 				// testing for single item return
+ 				if (parsed.rows.length === 1){
+		 			for(Qobj in queryArray){
+		 				if (parsed["error"] != undefined) {
+		 					console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" : "+parsed.error))
+		 					return
 	 					}
-	 					if((parsed.rows[0].usItemId !== expectedResponseArray[Qobj][0].usItemId)){
-	 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched usItemId"))
-	 						passed = false
-	 					}
-	 					if((parsed.rows[0].title !== expectedResponseArray[Qobj][0].title)){
-	 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched title"))
-	 						passed = false
-	 					}
-	 					if((parsed.rows[0].imageUrl !== expectedResponseArray[Qobj][0].imageUrl)){
-	 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched imageUrl"))
-	 						passed = false
-	 					}
-	 					if((parsed.rows[0].price !== expectedResponseArray[Qobj][0].price)){
-	 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched price"))
-	 						passed = false
-	 					}
-	 					if (passed === true) {
-	 						console.log(chalk.bold.greenBright.bgBlack('  \u2713  ')+chalk.bold.greenBright(Qobj+" Passed"))
-	 					}
-	 				}
-	 			}
+		 				// Find expected response for this query
+		 				if(queryArray[Qobj].query == parsed.original.query){
+		 					if((parsed.rows[0].productId !== expectedResponseArray[Qobj][0].productId)){
+		 						console.log(chalk.redBright.bgBlack('  \u03A7  ') +chalk.redBright(Qobj+" Failed mismatched productId"))
+		 						passed = false
+		 					}
+		 					if((parsed.rows[0].usItemId !== expectedResponseArray[Qobj][0].usItemId)){
+		 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched usItemId"))
+		 						passed = false
+		 					}
+		 					if((parsed.rows[0].title !== expectedResponseArray[Qobj][0].title)){
+		 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched title"))
+		 						passed = false
+		 					}
+		 					if((parsed.rows[0].imageUrl !== expectedResponseArray[Qobj][0].imageUrl)){
+		 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched imageUrl"))
+		 						passed = false
+		 					}
+		 					if((parsed.rows[0].price !== expectedResponseArray[Qobj][0].price)){
+		 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched price"))
+		 						passed = false
+		 					}
+		 					if (passed === true) {
+		 						console.log(chalk.bold.greenBright.bgBlack('  \u2713  ')+chalk.bold.greenBright(Qobj+" Passed"))
+		 					}
+		 				}
+		 			}
+		 		}
+		 		else if (parsed.rows.length > 1){
+		 			console.log(parsed)
+		 		}
+		 		// testing for multiple item return
+
+
 	 		}
 	 		catch(error){
 	 			console.log(error)
@@ -111,7 +120,7 @@ function createQueryArray() {
 	return queryArray = {
 		query1:{
 			queryNumber:"query1",
-			query:"Cokem International Preown 360 Halo: Combat Evolved Anniv2", 
+			query:"Cokem International Preown 360 Halo: Combat Evolved Anniv", 
 			searchType:"multipleItemSearch",
 		},
 		query2:{
@@ -122,6 +131,26 @@ function createQueryArray() {
 		query3:{
 			queryNumber:"query3",
 			query:"Xbox 360 Halo 3 (email delivery)", 
+			searchType:"multipleItemSearch",
+		},
+		query4:{
+			queryNumber:"query4 expected to fail with no results",
+			query:"this query will fail the test", 
+			searchType:"multipleItemSearch",
+		},
+		query5:{
+			queryNumber:"query5 expected to fail with bad query type",
+			query:"this query will fail the test", 
+			searchType:"multipleItemSearch",
+		},
+		query6ExpectFail:{
+			queryNumber:"query3",
+			query:"Refurbished Microsoft Xbox 360 4gb Console Halo 3 and Halo 4 Bundle", 
+			searchType:"multipleItemSearch",
+		},
+		query7MultipleItems:{
+			queryNumber:"query3",
+			query:"Halo", 
 			searchType:"multipleItemSearch",
 		}
 	}
@@ -150,6 +179,28 @@ function createExpectedResponseArray() {
 			price: 19.95
 		}],
 		query3:[{
+			productId: '30PFL94VDAUO',
+			usItemId: '56208070',
+			title: 'Xbox 360 Halo 3 (email delivery)',
+			imageUrl:
+			'https://i5.walmartimages.com/asr/6ced0869-a889-43d6-ad16-dd7bd78229ec_1.1785ebb4434a390ee1592b0f77e4',
+			price: 19.99
+		}],
+		query4:[{
+			expectFail:"expectFail"
+		}],
+		query5:[{
+			expectFail:"expectFail"
+		}],
+		query6ExpectFail:[{
+			productId: 'expectFail',
+			usItemId: 'expectFail',
+			title: 'expectFail',
+			imageUrl:
+			'expectFail',
+			price: 0000
+		}],
+		query7MultipleItems:[{
 			productId: '30PFL94VDAUO',
 			usItemId: '56208070',
 			title: 'Xbox 360 Halo 3 (email delivery)',
