@@ -45,3 +45,29 @@ CALL addItemToCart('dudes', '0RE8H6LY4PUR', '494046730', '1');
 
 
 
+-------------------------------------------------------------------------
+
+
+CREATE PROCEDURE createTransactions(IN userEmailIn VARCHAR(255))
+BEGIN
+	DECLARE txNumber INT DEFAULT 1;
+	SELECT MAX(transactionNumber) INTO txNumber
+	FROM ma995.`684Transaction`;
+
+	INSERT INTO ma995.`684Transaction`
+	(userEmail, usItemId, productId, itemPrice, quantity, `timestamp`, transactionNumber)
+	SELECT cart.userEmail, cart.productId, cart.usItemId, cart.quantity, items.price, NOW(), txNumber+1
+	FROM ma995.`684Cart` cart
+	INNER JOIN ma995.`684Items` items ON cart.productId = items.productId
+	WHERE cart.userEmail = 'admin@example.com';
+
+	DELETE FROM ma995.`684Cart`
+	WHERE userEmail='admin@example.com' ;
+
+	
+END;
+
+
+DROP PROCEDURE createTransactions;
+
+CALL createTransactions('admin@example.com');
