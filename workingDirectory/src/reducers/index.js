@@ -166,7 +166,15 @@ const reducer = (state = {}, action) => {
 		case 'CHECKOUT_ITEMS':
 			return{
 				...state
+		}
+
+		case "CONNECT_TO_MASTER_SERVER":
+		console.log("CONNECTING TO MASTER SERVER ")
+			return{
+				...state,
+				loading:true
 			}
+		
 
 
 

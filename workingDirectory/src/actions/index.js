@@ -66,6 +66,9 @@ export const checkoutItems = (userEmail) => ({
   userEmail:userEmail
 });
 
+export const connectToMasterServer = () => ({
+  type: 'CONNECT_TO_MASTER_SERVER',
+});
 
 
 

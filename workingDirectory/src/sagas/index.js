@@ -149,9 +149,38 @@ export function* fetchFromServer(event){
 			console.log("fetch from server error")
 			yield put({ type: "POST_ERROR"});
 		}
-
-
 }
+
+
+export function* fetchMasterServer(event){
+	try{
+		const json = yield fetch('https://web.njit.edu/~mjk29/reactMasterServer1.php', {
+				method: 'POST',
+				mode: "cors",
+				credentials: "same-origin", 
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					sendID:"qwe"
+				}),
+			})
+			.then(response => response.json())
+			.then(body => {
+				console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^6")
+				console.log(body)
+			})
+		}
+		catch(err){
+				console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^6")
+			yield put({ type: "POST_ERROR"});
+		}
+}
+
+
+
+
+
 
 
 
@@ -200,7 +229,9 @@ function* loginUserWatcher( ){
 function* removeItemWatcher( ){
 	const data = yield takeLatest('REMOVE_ITEM_FROM_CART', fetchFromServer)
 }
-
+function* connectToMasterServerWatcher( ){
+	const data = yield takeLatest('CONNECT_TO_MASTER_SERVER', fetchMasterServer)
+}
 
 
 export default function* rootSaga( ) {
@@ -213,5 +244,6 @@ export default function* rootSaga( ) {
 		addItemToCartWatcher(),
 		loginUserWatcher(),
 		removeItemWatcher(),
+		connectToMasterServerWatcher(),
   ]);
 }

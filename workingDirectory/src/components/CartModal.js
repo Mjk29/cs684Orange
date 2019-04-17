@@ -48,12 +48,12 @@ class CartModal extends React.Component {
 		this.props.toggleCartModalAction(this.props.cartModalState)
 	}
  
-	componentDidMount(){
-		console.log("cart modal mounted ")
-		// fetch cart items from db using credentials
-		this.fetchCartItemsFromDB()
+	// componentDidMount(){
+	// 	// console.log("cart modal mounted ")
+	// 	// fetch cart items from db using credentials
+	// 	this.fetchCartItemsFromDB()
 
-	}
+	// }
 
 	fetchCartItemsFromDB(){
 		console.log("fetchCartItemsFromDB function")
