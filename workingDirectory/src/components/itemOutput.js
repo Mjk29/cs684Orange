@@ -46,7 +46,7 @@ export class Output_items extends Component{
 				<div className="contact-card">
 					<Container fullHeight style={{"text-align":"center"}}>
 						<Row>
-							<img style={{width: 150, height: 150}} src={item.imageUrl+".jpeg"}></img>
+							<img style={{width: 150, height: 150}} src={item.imageUrl+".jpeg?odnHeight=150&odnWidth=150&odnBg=FFFFFF"}></img>
 						</Row>
 						<Row>{'$'+item.price.toFixed(2) +'\n'}</Row>
 						<Row>{item.title +'\n'}</Row>

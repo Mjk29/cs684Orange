@@ -91,7 +91,7 @@ class CartModal extends React.Component {
 			<div>
 			<Row>
 				<Col md={{ size: '1', offset: 0 }} >
-					<img style={{width: 50, height: 50}} src={item.imageUrl+".jpeg"}></img>
+					<img style={{width: 50, height: 50}} src={item.imageUrl+".jpeg?odnHeight=50&odnWidth=50&odnBg=FFFFFF"}></img>
 				</Col>
 
 				<Col md={{ size: '7', offset: 0 }} >
@@ -156,7 +156,7 @@ class CartModal extends React.Component {
 		this.props.fetchFromServer({
 			query:this.props.userEmail, 
 			searchType:"checkoutItems",
-			yieldAction:"CHECKOUT_ITEMS_RETURN"
+			yieldAction:"TOGGLE_CART_MODAL"
 		})
 	}
 
