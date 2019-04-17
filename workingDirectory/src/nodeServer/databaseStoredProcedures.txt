@@ -20,3 +20,28 @@ DROP PROCEDURE modifyCartToken;
 
 
 CALL modifyCartToken('admin@example.com', 'apj5m6hmbjle1nw91j0haj');
+-------------------------------------------------------------------------
+
+
+CREATE PROCEDURE addItemToCart(IN userEmailIn VARCHAR(255), IN productIdIn VARCHAR(255), IN usItemIdIn VARCHAR(255), IN quantityIn VARCHAR(255))
+BEGIN
+	
+	UPDATE ma995.`684Items`
+	SET hotness= hotness + 1, lastSearched=NOW()
+	WHERE productId = productIdIn AND usItemId = usItemIdIn;
+	
+	INSERT INTO ma995.`684Cart`
+	(userEmail, productId, usItemId, quantity)
+	VALUES(userEmailIn, productIdIn, usItemIdIn, 1)
+	on duplicate key update quantity = quantity +quantityIn;
+
+	
+END;
+
+
+DROP PROCEDURE addItemToCart;
+
+CALL addItemToCart('dudes', '0RE8H6LY4PUR', '494046730', '1');
+
+
+

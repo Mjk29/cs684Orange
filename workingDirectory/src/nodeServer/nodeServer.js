@@ -34,7 +34,7 @@ app.post('/', function (req, res) {
 			dbConnect(req,res, qString, req.body)
 			break;
 		case "multipleItemSearch":
-			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 50"
+			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 500"
 			dbConnect(req,res, qString, req.body)
 			break;
 		
@@ -44,13 +44,17 @@ app.post('/', function (req, res) {
 			// console.log("add item to cart")
 			// console.log(req.body)
 
-			qString = "INSERT INTO "+cartTableName+" (userEmail, productId, usItemId, quantity, `timestamp`) "
-				+"VALUES('"+req.body.query.userEmail
-				+"', '"+req.body.query.item.productId
-				+"', '"+req.body.query.item.usItemId
-				+"', '"+req.body.query.quantity
-				+"', CURRENT_TIMESTAMP);"
+			// qString = "INSERT INTO "+cartTableName+" (userEmail, productId, usItemId, quantity, `timestamp`) "
+			// 	+"VALUES('"+req.body.query.userEmail
+			// 	+"', '"+req.body.query.item.productId
+			// 	+"', '"+req.body.query.item.usItemId
+			// 	+"', '"+req.body.query.quantity
+			// 	+"', CURRENT_TIMESTAMP);"
 
+			qString = "CALL addItemToCart('"+req.body.query.userEmail
+					+"', '"+req.body.query.item.productId
+					+"', '"+req.body.query.item.usItemId
+					+"', '"+req.body.query.quantity+"');"
 			// console.log(qString)
 			dbConnect(req,res, qString, req.body)
 			break;
@@ -118,12 +122,8 @@ app.post('/', function (req, res) {
 			dbConnect(req,res, qString, req.body)
 			break
 
-
-
-						
-
-
 		default:
+			res.send(JSON.stringify({error:"bad query type",}))
 			return
 	} 
 
@@ -197,6 +197,7 @@ function dbConnect(req,res, qString, originalBody){
 	// console.log(rows)
 	// console.log(originalBody)
 	res.send(JSON.stringify({rows:rows, original:originalBody}))
+	// res.send(rows)
 	})
 
 	connection.end()
