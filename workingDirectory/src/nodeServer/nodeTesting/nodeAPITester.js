@@ -12,29 +12,127 @@ const chalk = require('chalk');
 main()
 
 function main(){
+	console.log(chalk.bgBlackBright.yellowBright("                                  "))
+	console.log(chalk.bgBlackBright.yellowBright("    Node Server Tester Running    "))
 
-console.log(chalk.blue('Hello') + ' World' + chalk.red('!'));
+	var queryArray = createQueryArray();
+	var expectedResponseArray = createExpectedResponseArray()
 
-	var queryArray = {
-		query1:{
-			query:"Cokem International Preown 360 Halo: Combat Evolved Anniv", 
-			searchType:"multipleItemSearch",
-			yieldAction:"FETCHED_MULTIPLE_ITMES"
-		},
-		query2:{
-			query:"Halo 3: ODST (Xbox 360)", 
-			searchType:"multipleItemSearch",
-			yieldAction:"FETCHED_MULTIPLE_ITMES"
-		},
-		query3:{
-			query:"Xbox 360 Halo 3 (email delivery)", 
-			searchType:"multipleItemSearch",
-			yieldAction:"FETCHED_MULTIPLE_ITMES"
-		}
+	var qsize = {
+		queryArraySize:Object.keys(queryArray).length, 
+		expectedResponseArraySize:Object.keys(expectedResponseArray).length
+	}
+	console.log(chalk.cyanBright.bgBlackBright("        Testing  "+qsize.queryArraySize+"  queries       "))
+	console.log(chalk.cyanBright.bgBlackBright("       Expecting "+qsize.expectedResponseArraySize+" responses      "))
+	console.log(chalk.bgBlackBright.yellowBright("                                  "))
+
+	serverTester(queryArray, expectedResponseArray)
+}
+
+
+
+function serverTester(queryArray, expectedResponseArray){
+	var returnedA = []
+	for(Q in queryArray){
+
+		fetch('http://afsconnect1.njit.edu:5688', {
+			method: 'POST',
+			mode: "cors",
+			dataType: 'jsonp',
+			credentials: "same-origin", 
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				searchType: queryArray[Q].searchType,
+				query:queryArray[Q].query,
+				queryNumber:queryArray[Q].queryNumber,
+
+			}),
+		})
+		.then(res => res.text())
+		.then(body => {
+ 			let parsed = JSON.parse(body)
+ 			let passed = true
+ 			try{
+ 				// console.log(parsed)
+ 				if (parsed.rows.length === 0){
+ 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(parsed.original.queryNumber+" : No Results Found"))
+ 						return
+ 					}
+	 			for(Qobj in queryArray){
+	 				if (parsed["error"] != undefined) {
+	 					console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" : "+parsed.error))
+	 					return
+ 					}
+	 				// Find expected response for this query
+	 				if(queryArray[Qobj].query == parsed.original.query){
+	 					if((parsed.rows[0].productId !== expectedResponseArray[Qobj][0].productId)){
+	 						console.log(chalk.redBright.bgBlack('  \u03A7  ') +chalk.redBright(Qobj+" Failed mismatched productId"))
+	 						passed = false
+	 					}
+	 					if((parsed.rows[0].usItemId !== expectedResponseArray[Qobj][0].usItemId)){
+	 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched usItemId"))
+	 						passed = false
+	 					}
+	 					if((parsed.rows[0].title !== expectedResponseArray[Qobj][0].title)){
+	 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched title"))
+	 						passed = false
+	 					}
+	 					if((parsed.rows[0].imageUrl !== expectedResponseArray[Qobj][0].imageUrl)){
+	 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched imageUrl"))
+	 						passed = false
+	 					}
+	 					if((parsed.rows[0].price !== expectedResponseArray[Qobj][0].price)){
+	 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched price"))
+	 						passed = false
+	 					}
+	 					if (passed === true) {
+	 						console.log(chalk.bold.greenBright.bgBlack('  \u2713  ')+chalk.bold.greenBright(Qobj+" Passed"))
+	 					}
+	 				}
+	 			}
+	 		}
+	 		catch(error){
+	 			console.log(error)
+	 			return
+	 		}
+
+ 		})
+		.catch(error => console.error('Error:', error))
 	}
 
 
-	var expectedResponseArray = {
+}
+
+
+function createQueryArray() {
+	return queryArray = {
+		query1:{
+			queryNumber:"query1",
+			query:"Cokem International Preown 360 Halo: Combat Evolved Anniv2", 
+			searchType:"multipleItemSearch",
+		},
+		query2:{
+			queryNumber:"query2",
+			query:"Halo 3: ODST (Xbox 360)", 
+			searchType:"multipleItemSearch",
+		},
+		query3:{
+			queryNumber:"query3",
+			query:"Xbox 360 Halo 3 (email delivery)", 
+			searchType:"multipleItemSearch",
+		}
+	}
+}
+
+
+
+
+
+function createExpectedResponseArray() {
+	return expectedResponseArray= {
 		query1:[{ 
 			productId: '5DVWGTJVZB5U',
 			usItemId: '23109097',
@@ -61,154 +159,4 @@ console.log(chalk.blue('Hello') + ' World' + chalk.red('!'));
 		}],
 
 	}
-
-
-
-
- 	serverTester(queryArray, expectedResponseArray)
-
-	// for (Q in queryArray){
-	// 	let serverResponse =   serverTester(queryArray[Q])
-	// }
-
-
-
 }
-
-
-
-function serverTester(queryArray, expectedResponseArray){
-	var returnedA = []
-	for(Q in queryArray){
-		// console.log(Q)
-
-		fetch('http://afsconnect1.njit.edu:5688', {
-			method: 'POST',
-			mode: "cors",
-			dataType: 'jsonp',
-			credentials: "same-origin", 
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				searchType: queryArray[Q].searchType,
-				query:queryArray[Q].query
-			}),
-		})
-		.then(res => res.text())
-		.then(body => {
- 			let parsed = JSON.parse(body)
- 			let passed = true
- 			for(Qobj in queryArray){
- 				// Find expected response for this query
- 				if(queryArray[Qobj].query == parsed.original.query){
- 					// console.log(parsed.rows[0].productId)
- 					// console.log(expectedResponseArray[Qobj][0].title)
- 					if((parsed.rows[0].productId !== expectedResponseArray[Qobj][0].productId)){
- 						console.log(chalk.redBright.bgBlack('  \u03A7  ') +chalk.redBright(Qobj+" Failed mismatched productId"))
- 						passed = false
- 					}
- 					if((parsed.rows[0].usItemId !== expectedResponseArray[Qobj][0].usItemId)){
- 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched usItemId"))
- 						passed = false
- 					}
- 					if((parsed.rows[0].title !== expectedResponseArray[Qobj][0].title)){
- 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched title"))
- 						passed = false
- 					}
- 					if((parsed.rows[0].imageUrl !== expectedResponseArray[Qobj][0].imageUrl)){
- 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched imageUrl"))
- 						passed = false
- 					}
- 					if((parsed.rows[0].price !== expectedResponseArray[Qobj][0].price)){
- 						console.log(chalk.redBright.bgBlack('  \u03A7  ')+chalk.redBright(Qobj+" Failed mismatched price"))
- 						passed = false
- 					}
- 					if (passed === true) {
- 						console.log(chalk.bold.greenBright.bgBlack('  \u2713  ') +chalk.bold.greenBright(Qobj+" Passed"))
- 					}
-
-
-
-
- 				}
- 			}
-
- 		});
-
-	}
-
-
-}
-
-
-// productId: '5DVWGTJVZB5U',
-//     usItemId: '23109097',
-//     title: 'Cokem International Preown 360 Halo: Combat Evolved Anniv',
-//     imageUrl:
-
-// create some container for test queries
-// create some container for expected responses
-// execute query and check if given correct response
-
-
-
-
-
-
-
-function stringGenerator(req){
-	switch(req.searchType) {
-		case "fullItemInfo":
-			qString = "SELECT * FROM "+itemTableName+" WHERE productId='"+req.query.productId+"' AND usItemId='"+req.query.usItemId+"'"
-			dbConnect(qString)
-			break;
-		case "autoCompleteSearchBar":
-			qString = "SELECT productId, usItemId, title FROM "+itemTableName+" WHERE title LIKE \'%"+req.query+"%\' ORDER BY hotness DESC LIMIT 20"
-			dbConnect(qString)
-			break;
-		case "multipleItemSearch":
-			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.query+"%\' ORDER BY hotness DESC LIMIT 50"
-			dbConnect(qString)
-			break;
-}
-}
-
-
-
-
-		
-
-
-
-
-
-
-
-
-
-
-
-function dbConnect(qString){
-	console.log("db function")
-	console.log(qString)
-	var mysql = require('mysql') 
-	var connection = mysql.createConnection({
-	  host     : 'sql.njit.edu',
-	  user     : 'ma995',
-	  password : 'pickup82',
-	  database : 'ma995'
-	});
-	connection.connect()
-	connection.query(qString, function (err, rows, fields) {
-	if (err){
-  		// dbErrorHandler(err, originalBody, res, req)
- 		return
-	}
-	console.log(rows)
-	// res.send(rows)
-	})
-	connection.end()
-}
-
