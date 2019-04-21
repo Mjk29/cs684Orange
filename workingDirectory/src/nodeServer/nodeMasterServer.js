@@ -1,16 +1,7 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var bodyParser = require('body-parser')
-var itemTableName = "684Items"
-var cartTableName = "684Cart"
 const chalk = require('chalk');
-
 const { exec } = require('child_process');
 
 main()
-
-
-
 
 function main() {
 	switch(process.argv[2]){
@@ -43,12 +34,19 @@ function main() {
 				console.log(chalk.cyanBright("        starts n nodeServer.js processes"))
 				return
 			}
-			startList = []
+			const startList = []
 			startPort = 5680
-			for (var i = 0; i < process.argv[3]; i++) {
-				startList.push({command:"node", file: "nodeServer.js", args:startPort+i})
+			for (let i = 0; i < process.argv[3]; i++) {
+				startList.push(() => startSlaveNode([{command:"node", file: "nodeServer.js", args:startPort+i}]))
 			}
-			startSlaveNode(startList)
+
+			const arrayOfPromises = startList.map(task => task())
+
+			Promise.all(arrayOfPromises)
+			.then((failedToStart) =>{
+				console.log(failedToStart)
+			})
+
 			run(startList)
 	}
 }
@@ -81,9 +79,6 @@ function run(startList) {
 		})
 	}, the_interval);
 }
-
-
-
 
 function checkCurrentProcesses() {
 	return new Promise(resolve =>{
@@ -123,21 +118,25 @@ function killProcesses(parsedArray) {
 }
 
 function startSlaveNode(sL) {
-	for (var i = 0; i < sL.length; i++) {
-		exec(sL[i].command+" "+sL[i].file+" "+sL[i].args, (err, cmdOutput, stderr) => {
-			if (err) {
-				let m;
-				const regex = /Error: listen EADDRINUSE :::(.*)/gm;
-				while ((m = regex.exec(err.message)) !== null) {
-					if (m.index === regex.lastIndex) {
-						regex.lastIndex++;
+	var unavailablePorts = []
+	return new Promise(resolve =>{
+		for (var i = 0; i < sL.length; i++) {
+			exec(sL[i].command+" "+sL[i].file+" "+sL[i].args, (err, cmdOutput, stderr) => {
+				if (err) {
+					let m;
+					const regex = /Error: listen EADDRINUSE :::(.*)/gm;
+					while ((m = regex.exec(err.message)) !== null) {
+						if (m.index === regex.lastIndex) {
+							regex.lastIndex++;
+						}
+						// console.log(chalk.red(`${m[1]}`))
+						unavailablePorts.push(m[1])
 					}
-					console.log(chalk.red(`${m[0]}`))
+					resolve(unavailablePorts)
 				}
-				return;
-			}
-		});
-	}
+ 			});
+		}
+ 	})
 }
 
 
