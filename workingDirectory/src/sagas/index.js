@@ -162,7 +162,7 @@ export function* fetchMasterServer(event){
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					sendID:"qwe"
+					sendID:"reactAppTeamOrange"
 				}),
 			})
 			.then(response => response.json())
