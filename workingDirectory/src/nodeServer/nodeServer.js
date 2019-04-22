@@ -44,7 +44,7 @@ app.post('/', function (req, res) {
 			dbConnect(req,res, qString, req.body)
 			break;
 		case "multipleItemSearch":
-			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 100"
+			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 500"
 			dbConnect(req,res, qString, req.body)
 			break;
 		
