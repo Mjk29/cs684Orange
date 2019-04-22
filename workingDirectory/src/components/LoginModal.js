@@ -89,12 +89,12 @@ class LoginModal extends React.Component {
 	loginErrorDisplay = () =>{
 		if (this.state.loginError.length != 0 ) {
 			return(
-				<Alert color="danger">{this.state.loginError}</Alert>
+				<Alert id="unsuccesfullogin" color="danger">{this.state.loginError}</Alert>
 			)
 		}
 		else if (this.state.userHasAuthenticated == true){
 			return(
-				<Alert color="success">User logged in</Alert>
+				<Alert id="succesfulogin" color="success">User logged in</Alert>
 			)
 		}
 	}
@@ -110,6 +110,7 @@ class LoginModal extends React.Component {
 
 			<InputGroup>
 				<Input 
+				name="username"
 				value={this.state.username} 
 				onChange={this.updateUsername}
 				placeholder="username"
@@ -119,17 +120,18 @@ class LoginModal extends React.Component {
 
 			<InputGroup>
 				<Input
+				name="password"
 				type="password"
 				value={this.state.password} 
 				onChange={this.updatePassword}
-				placeholder="username" />
+				placeholder="password" />
 			</InputGroup>
 
 
 			</ModalBody>
-			<ModalFooter>
-				{this.loginErrorDisplay()}
-				<Button color="success" onClick={this.userLogin}>login</Button>{' '}
+			<ModalFooter id="fuck">
+				{ this.loginErrorDisplay()}
+				<Button id="submitlogin" color="success" onClick={this.userLogin}>login</Button>{' '}
  			</ModalFooter>
 			</Modal>
 

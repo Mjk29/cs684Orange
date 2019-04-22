@@ -35,7 +35,7 @@ function serverTester(queryArray, expectedResponseArray){
 	var returnedA = []
 	for(Q in queryArray){
 
-		fetch('http://afsconnect2.njit.edu:5681', {
+		fetch('http://afsconnect1.njit.edu:5688', {
 			method: 'POST',
 			mode: "cors",
 			dataType: 'jsonp',
@@ -53,7 +53,7 @@ function serverTester(queryArray, expectedResponseArray){
 		})
 		.then(res => res.text())
 		.then(body => {
-  			let parsed = JSON.parse(body)
+ 			let parsed = JSON.parse(body)
  			let passed = true
  			try{
  				// console.log(parsed)
@@ -97,7 +97,7 @@ function serverTester(queryArray, expectedResponseArray){
 		 			}
 		 		}
 		 		else if (parsed.rows.length > 1){
-		 			// console.log(parsed)
+		 			console.log(parsed)
 		 		}
 		 		// testing for multiple item return
 

@@ -40,6 +40,19 @@ export const changeUserLoginWindowStateAction = (loginState) => ({
   loginState:loginState
 });
 
+
+// KARAN ADDED
+export const changeRegisterWindowStateAction = (registerWindowState) => ({
+  type: 'CHANGE_USER_REGISTER_WINDOW_STATE',
+  registerWindowState:registerWindowState
+});
+
+export const toggleRegisterModal = (toggleState) => ({
+  type: 'TOGGLE_REGISTER_MODAL',
+  registerState:toggleState
+});
+///
+
 export const toggleLoginModal = (toggleState) => ({
   type: 'TOGGLE_LOGIN_MODAL',
   loginState:toggleState

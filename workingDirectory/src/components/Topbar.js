@@ -18,7 +18,7 @@ import {
 
   } from 'reactstrap';
 import Searchbar from './Searchbar.js'
-import { changeUserLoginWindowStateAction, toggleCartModalAction,fetchFromServer } from '../actions'
+import { changeUserLoginWindowStateAction, toggleCartModalAction,fetchFromServer, changeRegisterWindowStateAction } from '../actions'
 import { connect } from 'react-redux';
 
 
@@ -42,6 +42,12 @@ export class Topbar extends React.Component {
 	showLoginWindow = () => {
 		this.props.dispatchShowLoginWindow({
 			loginWindowState:true,
+		})
+	}
+
+	showRegisterWindow = () => {
+		this.props.dispatchShowRegisterWindow({
+			registerWindowState:true,
 		})
 	}
 
@@ -91,14 +97,14 @@ export class Topbar extends React.Component {
 			else if (this.props.userHasAuthenticated === false) {
 				return(
 					<DropdownMenu right>
-						<DropdownItem  onClick={this.showLoginWindow}>
+						<DropdownItem id="clickLoginSequence" onClick={this.showLoginWindow}>
 							Login 
 						</DropdownItem>
-						<DropdownItem>
+						<DropdownItem id="clickRegisterSequence" onClick={this.showRegisterWindow} >
 							Register
 						</DropdownItem>
 							<DropdownItem divider />
-						<DropdownItem onClick={this.logoutUser}>
+						<DropdownItem id="logoutSequence" onClick={this.logoutUser}>
 							Logout
 						</DropdownItem>
  					</DropdownMenu>
@@ -106,7 +112,6 @@ export class Topbar extends React.Component {
 			}
 		}
 	}
-
 
 	displayUserName (){
 		if (localStorage.previouslyLoggedIn === "true"){
@@ -121,16 +126,12 @@ export class Topbar extends React.Component {
 		}
 	}
 
-
-
-
-
 	render() {
 		return (
 			<div>
-				<Navbar color="light" light expand="xl">
+				<Navbar id="para1" color="light" light expand="xl">
 					<Container fluid="true">
-						<NavbarToggler onClick={this.toggle} />
+						<NavbarToggler id="clickMobileMenu" onClick={this.toggle} />
 						<Collapse isOpen={this.state.isOpen} navbar>
 					<Row>
 					<Nav className="ml-auto" navbar>
@@ -154,7 +155,7 @@ export class Topbar extends React.Component {
 
 							<Col sm={{ size: 2, offset: 0 }}>
 								<UncontrolledDropdown nav inNavbar>
-									<DropdownToggle nav caret>
+									<DropdownToggle id="dropDownToggle" nav caret>
 									Account Settings
 									</DropdownToggle>
 									<div className="contacts">{this.accountState()}</div>
@@ -173,13 +174,11 @@ export class Topbar extends React.Component {
 
 
 const mapDispatchToProps = (dispatch) => ({
-	dispatchShowLoginWindow: (loginWindowState) => 
-		dispatch(changeUserLoginWindowStateAction(loginWindowState)),
-	dispatchToggleCartModal: (cartModalState) =>
-		dispatch(toggleCartModalAction(cartModalState)),
+	dispatchShowLoginWindow: (loginWindowState) => dispatch(changeUserLoginWindowStateAction(loginWindowState)),
+	dispatchToggleCartModal: (cartModalState) => dispatch(toggleCartModalAction(cartModalState)),
+	dispatchShowRegisterWindow: (registerWindowState) => dispatch(changeRegisterWindowStateAction(registerWindowState)),
 	fetchFromServer: (text) => dispatch(fetchFromServer(text)),
-
-
+	
 
  })
 
