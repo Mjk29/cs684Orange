@@ -124,7 +124,7 @@ export function* fetchFromServer(event){
 	console.log("fetch fqrom server function")
 	console.log(event)
 	try{
-		const json = yield fetch('http://afsconnect1.njit.edu:5688', {
+		const json = yield fetch('http://afsconnect1.njit.edu:'+localStorage.serverPort, {
 				method: 'POST',
 				mode: "cors",
 				dataType: 'jsonp',

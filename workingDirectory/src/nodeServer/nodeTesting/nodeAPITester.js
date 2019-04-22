@@ -35,7 +35,7 @@ function serverTester(queryArray, expectedResponseArray){
 	var returnedA = []
 	for(Q in queryArray){
 
-		fetch('http://afsconnect1.njit.edu:5688', {
+		fetch('http://afsconnect1.njit.edu:5681', {
 			method: 'POST',
 			mode: "cors",
 			dataType: 'jsonp',
