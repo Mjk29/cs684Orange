@@ -29,7 +29,7 @@ export class Searchbar extends Component {
 		this.props.triggerParentUpdate(this.state.singleItemInfo)
 		console.log(this.state.selected[0].productId)
 		
-		fetch('http://afsconnect1.njit.edu:'+localStorage.portNumber, {
+		fetch('http://afsconnect2.njit.edu:'+localStorage.portNumber, {
 			method: 'POST',
 			mode: "cors",
 			dataType: 'jsonp',
@@ -77,7 +77,7 @@ export class Searchbar extends Component {
 
 		console.log("Here is the query: " +query)
 		console.log("fetch function")
-		fetch('http://afsconnect1.njit.edu:5688/', {
+		fetch('http://afsconnect2.njit.edu:5688/', {
 			method: 'POST',
 			mode: "cors",
 			dataType: 'jsonp',

@@ -80,9 +80,9 @@ function listenForConnections() {
 	});
 	app.get('/', function (req, res) {
 		console.log(serverList)
-		res.redirect("http://afsconnect1.njit.edu:"
-			+serverList["startNPMServer.js"][nextServer++]["port"]
-			+"/?"+(JSON.stringify({"serverPort:":serverList["nodeServer.js"][nextServer++]["port"]})))
+		res.redirect("http://afsconnect2.njit.edu:"
+			+serverList["startNPMServer.js"][nextServer]["port"]
+			+"/?"+(JSON.stringify({"serverPort":serverList["nodeServer.js"][nextServer++]["port"]})))
 		if (nextServer >= maxServer) {nextServer = 0}
 	})
 }
@@ -142,7 +142,7 @@ function run(startList, filename) {
 			}
 			startSlaveNode(restartList)
  		})
-	}, 5000);
+	}, 30000);
 }
 
 function checkCurrentProcesses(filename) {
