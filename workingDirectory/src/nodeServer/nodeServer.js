@@ -3,10 +3,6 @@ var http = require('http').Server(app);
 var bodyParser = require('body-parser')
 var itemTableName = "684Items"
 var cartTableName = "684Cart"
-// const process = require('process');
-
-// console.log(process.argv[2])
-
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -15,12 +11,6 @@ app.use(function(req, res, next) {
 });
 
 app.use(bodyParser.json())
-
-http.listen(process.argv[2], function(){
-  console.log('listening on '+process.argv[2]);
-});
-
-
 
 
 app.get('/', function (req, res) {
@@ -44,7 +34,7 @@ app.post('/', function (req, res) {
 			dbConnect(req,res, qString, req.body)
 			break;
 		case "multipleItemSearch":
-			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 500"
+			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 100"
 			dbConnect(req,res, qString, req.body)
 			break;
 		
@@ -143,6 +133,9 @@ app.post('/', function (req, res) {
 
 
 
+http.listen(5688, function(){
+  console.log('listening on *:5688');
+});
 
 
 

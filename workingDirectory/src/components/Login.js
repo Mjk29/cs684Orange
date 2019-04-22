@@ -39,8 +39,8 @@ class Login extends Component {
 
   render() {
   	return (
-  		<div className="login">
-	  		<form onSubmit={this.handleSubmit}>
+  		<div  className="login">
+	  		<form  onSubmit={this.handleSubmit}>
 		  		<FormGroup controlId="email" bsSize="large">
 			  		<FormLabel>Email</FormLabel>
 			  		<FormControl

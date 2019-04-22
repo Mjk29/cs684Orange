@@ -12,48 +12,27 @@ import { connect } from 'react-redux';
 import { connectToMasterServer} from '../actions'
 import { bindActionCreators } from 'redux'
 
+import Signup from './Signup.js'
+
 
 class App extends Component{
 
-	componentDidMount(){
-		// console.log("App mounted ")
-		// console.log(window.location.search)
-		// console.log(JSON.parse(decodeURIComponent(window.location.search.slice(1))))
-		if (window.location.search.length > 0) {
-			try{
-				var portObj = JSON.parse(decodeURIComponent(window.location.search.slice(1)))
-				localStorage.setItem("serverPort",portObj.serverPort)
-			}
-			catch{
-				console.log("malformed serverport")
-			}
-		}
-		// var portObj = JSON.parse(decodeURIComponent(window.location.search.slice(1)))
-		// // console.log(portObj.serverPort)
-		// localStorage.setItem("serverPort",portObj)
-		// // console.log(JSON.parse(window.location.search))
-		// if (localStorage.hasOwnProperty("serverPort")) {
-		// 	console.log("port alrady in lcal stoarre"+localStorage.serverPort)
-		// }
-		// else{
-		// 	console.log("server p[ort notin local storage setting now")
-		// 	localStorage.setItem("serverPort",window.location.search)
-		// }
+	// componentDidMount(){
+	// 	console.log("App mounted ")
+	// 	this.props.connectToMasterServer({
+	// 		query:this.props.userEmail, 
+	// 		searchType:"fetchCartItems",
+	// 		yieldAction:"FETCHED_CART_ITEMS"
+	// 	})
 
-		// this.props.connectToMasterServer({
-		// 	query:this.props.userEmail, 
-		// 	searchType:"fetchCartItems",
-		// 	yieldAction:"FETCHED_CART_ITEMS"
-		// })
-
-	}
-
+	// }
 
 	render() {
 		return (
 			<div>
 				<Topbar />
 				<LoginModal />
+				<Signup />
 				<CartModal />
 				<ItemOutput />
 			</div>
