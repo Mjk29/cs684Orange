@@ -119,6 +119,22 @@ const reducer = (state = {}, action) => {
     			loginWindowState: action.loginState.loginWindowState
 			}
 
+		case 'CHANGE_USER_REGISTER_WINDOW_STATE':
+			console.log("CHANGE_USER_REGISTER_WINDOW_STATE: ")
+			console.log(action)
+			return{
+				...state, 
+    			registerWindowState: action.registerWindowState
+			}
+		
+		case 'TOGGLE_REGISTER_MODAL':
+			console.log(state)
+			return{
+				...state,
+				registerWindowState: !state.registerWindowState
+		}
+			
+
 		case 'TOGGLE_LOGIN_MODAL':
 			console.log(state)
 			return{

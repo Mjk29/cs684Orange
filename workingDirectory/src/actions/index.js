@@ -71,7 +71,15 @@ export const connectToMasterServer = () => ({
 });
 
 
+export const changeRegisterWindowStateAction = (registerWindowState) => ({
+  type: 'CHANGE_USER_REGISTER_WINDOW_STATE',
+  registerWindowState:registerWindowState
+});
 
+export const toggleRegisterModal = (toggleState) => ({
+  type: 'TOGGLE_REGISTER_MODAL',
+  registerState:toggleState
+});
 
 
 

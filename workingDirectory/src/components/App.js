@@ -3,6 +3,7 @@ import Searchbar from './Searchbar.js'
 import ItemOutput from './itemOutput.js'
 import LoginModal from './LoginModal.js'
 import CartModal from './CartModal.js'
+import Signup from './Signup.js'
 
 import Topbar from './Topbar.js'
 import BodyContainer from './BodyContainer.js'
@@ -54,6 +55,7 @@ class App extends Component{
 			<div>
 				<Topbar />
 				<LoginModal />
+				<Signup />
 				<CartModal />
 				<ItemOutput />
 			</div>

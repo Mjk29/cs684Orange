@@ -48,6 +48,8 @@ const store = createStore(
 		cartModalState:false,
 		userHasAuthenticated:false,
 		previouslyLoggedIn:previouslyLoggedIn,
+		registerWindowState: false,
+
 
 
 	},
@@ -75,11 +77,6 @@ Amplify.configure({
 	}
 });
 
-
-// const store = createStore(
-//   reducer,
-//   applyMiddleware(sagaMiddleware,logger),
-// );
 
 sagaMiddleware.run(rootSaga);
 
