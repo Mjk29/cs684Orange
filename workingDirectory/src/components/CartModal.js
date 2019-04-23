@@ -1,21 +1,21 @@
 
 import React from 'react';
 import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupButtonDropdown,
-	InputGroupDropdown,
-	Input,
+	// InputGroup,
+	// InputGroupAddon,
+	// InputGroupButtonDropdown,
+	// InputGroupDropdown,
+	// Input,
 	Button,
-	Dropdown,
-	DropdownToggle,
-	DropdownMenu,
-	DropdownItem,
+	// Dropdown,
+	// DropdownToggle,
+	// DropdownMenu,
+	// DropdownItem,
 	Modal,
 	ModalHeader,
 	ModalBody,
 	ModalFooter,
-	Alert,
+	// Alert,
 	Container,
 	Row,
 	Col,
@@ -23,8 +23,8 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { toggleCartModalAction, userLoginAction, removeItemFromCartAction, fetchFromServer} from '../actions'
-import { bindActionCreators } from 'redux'
-import { Auth } from "aws-amplify";
+// import { bindActionCreators } from 'redux'
+// import { Auth } from "aws-amplify";
 
 
 class CartModal extends React.Component {
@@ -38,7 +38,8 @@ class CartModal extends React.Component {
 			password:"",
 			loginError:"",
 			userHasAuthenticated:false,
-			totalPrice:0
+			totalPrice:0,
+			priceCalculated:false
 		};
 
 		this.toggle = this.toggle.bind(this);
@@ -70,6 +71,26 @@ class CartModal extends React.Component {
 	}
 
 
+
+	calculateTotalCartPrice (){
+		var cartPrice = 0.00
+
+		if (this.props.cartItems.length > 0) {
+			for (var i = 0; i < this.props.cartItems.length; i++) {
+				cartPrice+=this.props.cartItems[i].price
+			}
+		}
+		// return cartPrice
+		// if (this.state.priceCalculated === false) {
+		// 	this.setState({
+		// 		totalPrice: cartPrice,
+		// 		priceCalculated:true
+		// 	})	
+		// }
+
+		this.state.totalPrice = cartPrice
+	}
+
 // renders the item output for the cart modal
 // maps the items in store.cartItems and displays 
 	renderCartItems = () =>{
@@ -77,21 +98,21 @@ class CartModal extends React.Component {
 		console.log(this.props.cartItems)
 		console.log(typeof(this.props.cartItems))
 		
-		var cartPrice = 0.00
+		
+// this.setState({
+// 			totalPrice: this.calculateTotalCartPrice()
+// 		})
+		this.calculateTotalCartPrice()
 
 		if (this.props.cartItems.length > 0) {
-			const renderMultiple = this.props.cartItems.map((item) => {
-				cartPrice+= item.price
-			})
-		}
-		this.state.totalPrice = cartPrice
-
-		if (this.props.cartItems.length > 0) {
-			const renderMultiple = this.props.cartItems.map((item) => 
+			var renderMultiple = this.props.cartItems.map((item) => 
 			<div>
 			<Row>
 				<Col md={{ size: '1', offset: 0 }} >
-					<img style={{width: 50, height: 50}} src={item.imageUrl+".jpeg?odnHeight=50&odnWidth=50&odnBg=FFFFFF"}></img>
+					<img style={{width: 50, height: 50}} 
+					src={item.imageUrl+".jpeg?odnHeight=50&odnWidth=50&odnBg=FFFFFF"}
+ 					alt="itemImage"
+					></img>
 				</Col>
 
 				<Col md={{ size: '7', offset: 0 }} >
@@ -144,8 +165,8 @@ class CartModal extends React.Component {
 				</Col>
 			</Row>
 			</div>
- 			)
- 			 		return renderMultiple
+			)
+			return renderMultiple
 
 		}
 	

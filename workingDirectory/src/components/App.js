@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
-import Searchbar from './Searchbar.js'
+// import Searchbar from './Searchbar.js'
 import ItemOutput from './itemOutput.js'
 import LoginModal from './LoginModal.js'
 import CartModal from './CartModal.js'
 import Signup from './Signup.js'
 
 import Topbar from './Topbar.js'
-import BodyContainer from './BodyContainer.js'
-import { Link, withRouter } from "react-router-dom";
+// import BodyContainer from './BodyContainer.js'
+// import { Link, withRouter } from "react-router-dom";
 
 import { connect } from 'react-redux';
 import { connectToMasterServer} from '../actions'
-import { bindActionCreators } from 'redux'
+// import { bindActionCreators } from 'redux'
 
 
 class App extends Component{

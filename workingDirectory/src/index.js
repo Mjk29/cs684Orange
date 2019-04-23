@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
-import { logger } from 'redux-logger';
+// import { logger } from 'redux-logger';
 import reducer from './reducers';
 import App from './components/App';
 import rootSaga from './sagas';

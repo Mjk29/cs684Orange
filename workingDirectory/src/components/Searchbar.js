@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import IntegrationAutosuggest from './autoCompleteBar';
-import {asyncContainer, Typeahead} from 'react-bootstrap-typeahead';
+// import IntegrationAutosuggest from './autoCompleteBar';
+// import {asyncContainer, Typeahead} from 'react-bootstrap-typeahead';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import { searchTerm, fetchFromServer } from '../actions'
-import { bindActionCreators } from 'redux'
+// import { bindActionCreators } from 'redux'
 
 
 export class Searchbar extends Component {
@@ -116,7 +116,7 @@ export class Searchbar extends Component {
 		console.log("keydown")
 		console.log(event.key)
 		console.log(this.state.userInput )
-		if(event.key == "Enter"){
+		if(event.key === "Enter"){
 			// console.log("ENTER PRESSED")
 			// this.itemSearch()
 			// console.log(this.state )

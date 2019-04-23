@@ -115,13 +115,13 @@ class Signup extends Component {
   }
   
   loginErrorDisplay = () =>{
-    if (this.state.loginError.length != 0 ) {
+    if (this.state.loginError.length !== 0 ) {
       return(
         // <Alert id="userAlreadyExistsAlert" color="danger">{this.state.loginError}</Alert>
         <Alert id="userAlreadyExistsAlert" color="danger">{this.state.loginError}</Alert>
       )
     }
-    else if (this.state.userHasAuthenticated == true){
+    else if (this.state.userHasAuthenticated === true){
       return(
         <Alert id ="succesfulNewUserRegistration" color="success">Registration was succesfull</Alert>
       )

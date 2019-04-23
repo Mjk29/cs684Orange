@@ -1,15 +1,15 @@
 import React from 'react';
 import {
 	InputGroup,
-	InputGroupAddon,
-	InputGroupButtonDropdown,
-	InputGroupDropdown,
+	// InputGroupAddon,
+	// InputGroupButtonDropdown,
+	// InputGroupDropdown,
 	Input,
 	Button,
-	Dropdown,
-	DropdownToggle,
-	DropdownMenu,
-	DropdownItem,
+	// Dropdown,
+	// DropdownToggle,
+	// DropdownMenu,
+	// DropdownItem,
 	Modal,
 	ModalHeader,
 	ModalBody,
@@ -18,7 +18,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { toggleLoginModal, userLoginAction } from '../actions'
-import { bindActionCreators } from 'redux'
+// import { bindActionCreators } from 'redux'
 import { Auth } from "aws-amplify";
 
 
@@ -56,7 +56,7 @@ class LoginModal extends React.Component {
 
 
 	userLogin = async ( ) =>{
-		if(this.state.username.length != 0 && this.state.password.length != 0){
+		if(this.state.username.length !== 0 && this.state.password.length !== 0){
 			try {
 				await Auth.signIn(this.state.username, this.state.password);
 				this.setState({
@@ -87,12 +87,12 @@ class LoginModal extends React.Component {
 
 
 	loginErrorDisplay = () =>{
-		if (this.state.loginError.length != 0 ) {
+		if (this.state.loginError.length !== 0 ) {
 			return(
 				<Alert id="unsuccesfullogin" color="danger">{this.state.loginError}</Alert>
 			)
 		}
-		else if (this.state.userHasAuthenticated == true){
+		else if (this.state.userHasAuthenticated === true){
 			return(
 				<Alert id="succesfulogin" color="success">User logged in</Alert>
 			)
