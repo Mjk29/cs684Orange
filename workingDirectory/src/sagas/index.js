@@ -121,34 +121,56 @@ export function* fetchFromServer(event){
 	// Event = {searchType, query, actionType}
 	// Fetch to server with searchType & query
 	// yield put actionType & returned adata
-	console.log("fetch fqrom server function")
-	console.log(event)
+	let timer = { time0:0, time1:1, elapsed:0 }
 	try{
+		
+		timer.time0 = Date.now()
 		const json = yield fetch('http://afsconnect2.njit.edu:'+localStorage.serverPort, {
-				method: 'POST',
-				mode: "cors",
-				dataType: 'jsonp',
-				credentials: "same-origin", 
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					searchType: event.searchObj.searchType,
-					query:event.searchObj.query
-				}),
-			})
-			.then(response => response.json(), );
-			console.log("FETCHED FROM SDERVER")
-			console.log(json)
-			console.log(json.rows)
-			console.log("FETCHED FROM SDERVER")
-			yield put({ type: event.searchObj.yieldAction, items: json.rows, });
-		}
-		catch(err){
-			console.log("fetch from server error")
-			yield put({ type: "POST_ERROR"});
-		}
+			method: 'POST',
+			mode: "cors",
+			dataType: 'jsonp',
+			credentials: "same-origin", 
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				searchType: event.searchObj.searchType,
+				query:event.searchObj.query
+			}),
+		})
+		.then(response => response.json());
+		
+		timer.time1 = Date.now()
+		timer.elapsed = (timer.time1 - timer.time0)
+		console.log(timer)
+
+
+		fetch('http://afsconnect2.njit.edu:'+localStorage.dashboardPort, {
+			method: 'POST',
+			mode: "cors",
+			dataType: 'jsonp',
+			credentials: "same-origin", 
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				searchType: event.searchObj.searchType,
+				query:event.searchObj.query,
+				timer:timer,
+				userEmail:localStorage.userEmail
+			}),
+		})
+
+
+		
+		yield put({ type: event.searchObj.yieldAction, items: json.rows, });
+	}
+	catch(err){
+		console.log("fetch from server error")
+		yield put({ type: "POST_ERROR"});
+	}
 }
 
 

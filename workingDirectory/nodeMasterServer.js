@@ -3,6 +3,8 @@ const { exec } = require('child_process');
 var app = require('express')();
 var http = require('http').Server(app);
 var bodyParser = require('body-parser')
+var table = require('table')
+// var term = require( 'terminal-kit' ).terminal ;
 
 global.nextServer = 0
 global.maxServer = process.argv[3]
@@ -19,6 +21,8 @@ app.use(function(req, res, next) {
 main()
 
 function main() {
+
+	let startTime = 0
 	switch(process.argv[2]){
 		case "?":
 			displayHelp()
@@ -34,29 +38,36 @@ function main() {
 		case "-list":
 			checkCurrentProcesses("nodeServer.js")
 			.then((data) => {
-				console.log(formatPgrep(data))
+				displayTable(formatPgrep(data), "nodeServer.js")
 			})
 			break
 
 		case "-start":
-			startNodeServers("nodeServer.js")
+			startTime = checkUpdateArgs()
+			startNodeServers("nodeServer.js", startTime)
 			break
 
 		case "-listNPM":
 			checkCurrentProcesses("startNPMServer.js")
 			.then((data) => {
-				console.log(formatPgrep(data))
+				displayTable(formatPgrep(data), "startNPMServer.js")
 			})
 			break
 		case "-startNPM":
-			startNodeServers("startNPMServer.js") 
+			startTime = checkUpdateArgs()
+			startNodeServers("startNPMServer.js", startTime) 
 			break
 		
 		case "-run":
-			startNodeServers("startNPMServer.js")
-			startNodeServers("nodeServer.js")
+			startTime = checkUpdateArgs()
+			startNodeServers("startNPMServer.js", startTime)
+			startNodeServers("nodeServer.js", startTime)
 			
 			listenForConnections()
+			break
+
+		case "-test":
+			testTable()
 			break
 
 		default:
@@ -66,12 +77,142 @@ function main() {
 }
 
 
-function displayTable(serverList) {
-	console.log(chalk.rgb(33, 255, 0).bold.bgRgb(0, 25, 66)("===================================================================="))
-	for (var i = 0; i < serverList.length; i++) {
-		console.log(chalk.rgb(33, 255, 0).bold.bgRgb(0, 25, 66)(`||    ${serverList[i].pid}    ${serverList[i].cmd}    ${serverList[i].file}    ${serverList[i].port}    ||`))
+
+
+
+
+
+function checkUpdateArgs() {
+	let updateTimeArg = parseInt(process.argv[5], 10)
+	if(Number.isInteger(updateTimeArg) && updateTimeArg >= 1){
+		// console.log("good number" + updateTimeArg)
+		return (updateTimeArg*1000)
 	}
-	console.log(chalk.rgb(33, 255, 0).bold.bgRgb(0, 25, 66)("===================================================================="))
+	else{
+		console.log(chalk.redBright("unuseable update time : "+ updateTimeArg))
+		console.log(chalk.redBright("defaulting to 30 "))
+		return 30000
+	}
+
+}
+
+
+function displayHelp() {
+	console.log(chalk.cyanBright("    Help menu:"))
+	console.log(chalk.cyanBright("        -run n\n            starts n nodeServer.js and n NPMServer processes"))
+	console.log(chalk.cyanBright("        -start n\n            starts n nodeServer.js processes"))
+	console.log(chalk.cyanBright("        -list\n            lists all running nodeServer processes"))
+	console.log(chalk.cyanBright("        -startNPM n\n            starts n NPMServer processes"))
+	console.log(chalk.cyanBright("        -listNPM\n            lists all running NPMServer processes"))
+	console.log(chalk.cyanBright("        -kill\n            kills all running nodeServer processes"))
+	console.log(chalk.cyanBright("        -updateTime\n            set update time in seconds, default 30"))
+	console.log(chalk.cyanBright("        -?\n            displays this help menu\n"))
+}
+
+
+
+function displayTable(serverList, filename) {
+	try{
+		if (Object.keys(serverList).length === 1) {
+			config = {
+				columns: {
+					0: {alignment: 'left',minWidth: 10},
+					1: {alignment: 'left',minWidth: 10},
+					2: {alignment: 'left',width: 35},
+					3: {alignment: 'right',minWidth: 10}
+				},
+				border: {
+					topBody: chalk.rgb(0,26,13)('─'),
+					topJoin: chalk.rgb(0,26,13)('┬'),
+					topLeft: chalk.rgb(0,26,13)('┌'),
+					topRight: chalk.rgb(0,26,13)('┐'),
+
+					bottomBody: chalk.rgb(0,26,13)('─'),
+					bottomJoin: chalk.rgb(0,26,13)('┴'),
+					bottomLeft: chalk.rgb(0,26,13)('└'),
+					bottomRight: chalk.rgb(0,26,13)('┘'),
+
+					bodyLeft: chalk.rgb(0,26,13)('│'),
+					bodyRight: chalk.rgb(0,26,13)('│'),
+					bodyJoin: chalk.rgb(0,26,13)('│'),
+
+					joinBody: chalk.rgb(0,26,13)('─'),
+					joinLeft: chalk.rgb(0,26,13)('├'),
+					joinRight: chalk.rgb(0,26,13)('┤'),
+					joinJoin: chalk.rgb(0,26,13)('┼')
+				}
+			};
+
+			serverTable = [	['PID', 'CMD', 'FILE', 'PORT']	]
+			for (var i = 0; i < serverList[filename].length; i++) {
+				serverTable.push([
+					chalk.green(serverList[filename][i].pid),
+					chalk.magenta(serverList[filename][i].cmd),
+					chalk.cyan(serverList[filename][i].file),
+					chalk.red(serverList[filename][i].port)
+				])
+			}
+			output = table.table(serverTable, config);
+			process.stdout.write('\033c\033[2J'+output);
+		}
+		else{
+
+			config = {
+				columns: {
+					0: { alignment: 'left',minWidth: 10 },
+					1: { alignment: 'left',minWidth: 10 },
+					2: { alignment: 'left',width: 35 },
+					3: { alignment: 'right',minWidth: 10 },
+					4: { alignment: 'left',minWidth: 5 },
+					5: { alignment: 'left',minWidth: 10 },
+					6: { alignment: 'left',minWidth: 10 },
+					7: { alignment: 'left',width: 35 },
+					8: { alignment: 'right',minWidth: 10 },
+				},
+				border: {
+					topBody: chalk.rgb(0,26,13)('─'),
+					topJoin: chalk.rgb(0,26,13)('┬'),
+					topLeft: chalk.rgb(0,26,13)('┌'),
+					topRight: chalk.rgb(0,26,13)('┐'),
+
+					bottomBody: chalk.rgb(0,26,13)('─'),
+					bottomJoin: chalk.rgb(0,26,13)('┴'),
+					bottomLeft: chalk.rgb(0,26,13)('└'),
+					bottomRight: chalk.rgb(0,26,13)('┘'),
+
+					bodyLeft: chalk.rgb(0,26,13)('│'),
+					bodyRight: chalk.rgb(0,26,13)('│'),
+					bodyJoin: chalk.rgb(0,26,13)('│'),
+
+					joinBody: chalk.rgb(0,26,13)('─'),
+					joinLeft: chalk.rgb(0,26,13)('├'),
+					joinRight: chalk.rgb(0,26,13)('┤'),
+					joinJoin: chalk.rgb(0,26,13)('┼')
+				}
+			};
+
+			serverTable = [['PID', 'CMD', 'FILE', 'PORT',' ', 'PID', 'CMD', 'FILE', 'PORT']]
+			for (var i = 0; i < serverList[Object.keys(serverList)[0]].length; i++) {
+				serverTable.push([
+					chalk.green(serverList[Object.keys(serverList)[0]][i].pid), 
+					chalk.magenta(serverList[Object.keys(serverList)[0]][i].cmd), 
+					chalk.cyan(serverList[Object.keys(serverList)[0]][i].file), 
+					chalk.red(serverList[Object.keys(serverList)[0]][i].port),
+					" ",
+					chalk.green(serverList[Object.keys(serverList)[1]][i].pid), 
+					chalk.magenta(serverList[Object.keys(serverList)[1]][i].cmd), 
+					chalk.cyan(serverList[Object.keys(serverList)[1]][i].file), 
+					chalk.red(serverList[Object.keys(serverList)[1]][i].port),
+				])
+			}
+			output = table.table(serverTable, config);
+			process.stdout.write('\033c\033[2J'+output);
+		
+		}
+	}
+	catch{
+		return
+	}
 }
 
 function listenForConnections() {
@@ -87,7 +228,7 @@ function listenForConnections() {
 	})
 }
 
-function startNodeServers(filename) {
+function startNodeServers(filename, updateTime) {
 	if (process.argv[3] === undefined){
 		console.log(chalk.cyanBright("    -start n\n        starts n nodeServer.js processes"))
 			return
@@ -104,19 +245,15 @@ function startNodeServers(filename) {
 	.then((failedToStart) =>{
 		console.log(failedToStart)
 	})
-	run(startList, filename)
+	run(startList, filename, updateTime)
 }
 
 
-function displayHelp() {
-	console.log(chalk.cyanBright("    Help menu:"))
-	console.log(chalk.cyanBright("        -start n\n            starts n nodeServer.js processes"))
-	console.log(chalk.cyanBright("        -list\n            lists all running nodeServer processes"))
-	console.log(chalk.cyanBright("        -kill\n            kills all running nodeServer processes\n"))
-}
 
 
-function run(startList, filename) {
+function run(startList, filename, updateTime) {
+	// if (process.argv[4] === "-update" && process.argv[5]) {}
+
 	var minutes = 5
 	var portHash = {}
 	for (var i = 0; i < startList.length; i++) {
@@ -130,7 +267,7 @@ function run(startList, filename) {
 		checkCurrentProcesses(filename)
 		.then((data) => {
 			serverList[filename] = formatPgrep(data)
-			displayTable(serverList[filename])
+			displayTable(serverList, filename)
 			for (var i = 0; i < serverList[filename].length; i++) {
 				portHash[serverList[filename][i].port] = 1
 			}
@@ -142,7 +279,7 @@ function run(startList, filename) {
 			}
 			startSlaveNode(restartList)
  		})
-	}, 30000);
+	}, updateTime);
 }
 
 function checkCurrentProcesses(filename) {

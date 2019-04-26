@@ -34,7 +34,9 @@
     "redux-persist": "^5.10.0",
     "redux-saga": "^1.0.2",
     "redux-thunk": "^2.3.0",
-    "serve": "^11.0.0"
+    "serve": "^11.0.0",
+    "table": "^5.2.3",
+    "terminal-kit": "^1.28.0"
   },
   "scripts": {
     "start": "PORT=5000 react-scripts start",
