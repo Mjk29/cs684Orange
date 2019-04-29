@@ -12,10 +12,7 @@ import {
 import NumericInput from 'react-numeric-input'; 
 
 export class Output_items extends Component{
-	constructor(props){
-		super(props);
-		 
-	}
+	
 	state = {
 		allowNew: false,
 		isLoading: false,
@@ -33,9 +30,9 @@ export class Output_items extends Component{
 		// If single item, render all info for props.singleitem
 
 		
-		if(this.props.loading == false){
+		if(this.props.loading === false){
 			// If multiple items, render all items in props.multipleItems
-			if (this.props.multipleItems.length != 0) {
+			if (this.props.multipleItems.length !== 0) {
 				console.log("rendering multiple items")
 				// const renderMultiple = this.props.multipleItems.map((item) => console.log(item.title))
 
@@ -46,7 +43,10 @@ export class Output_items extends Component{
 				<div className="contact-card">
 					<Container fullHeight style={{"text-align":"center"}}>
 						<Row>
-							<img style={{width: 150, height: 150}} src={item.imageUrl+".jpeg?odnHeight=150&odnWidth=150&odnBg=FFFFFF"}></img>
+							<img style={{width: 150, height: 150}} 
+								src={item.imageUrl+".jpeg?odnHeight=150&odnWidth=150&odnBg=FFFFFF"}
+								alt="itemImage"
+								></img>
 						</Row>
 						<Row>{'$'+item.price.toFixed(2) +'\n'}</Row>
 						<Row>{item.title +'\n'}</Row>

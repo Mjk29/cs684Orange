@@ -2,12 +2,12 @@ import { Auth } from "aws-amplify";
 import React, { Component } from "react";
 
 import {
-	InputGroup,
-	Input,
-	Button,
-	Modal,
-	ModalHeader,
-	ModalBody,
+  InputGroup,
+  Input,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
   ModalFooter,
   Alert
 } from 'reactstrap';
@@ -36,8 +36,8 @@ class Signup extends Component {
   }
 
   toggle() {
-		this.props.toggleRegisterWindowDispatch(this.props.registerWindowState)
-	}
+    this.props.toggleRegisterWindowDispatch(this.props.registerWindowState)
+  }
 
   validateForm() {
     return (
@@ -103,81 +103,81 @@ class Signup extends Component {
   }
 
   updateEmail= (event) =>{
-		this.setState({
-			email: event.target.value
-		});
+    this.setState({
+      email: event.target.value
+    });
   }
   
   updatePassword = (event) =>{
-		this.setState({
-			password: event.target.value
-		});
+    this.setState({
+      password: event.target.value
+    });
   }
   
   loginErrorDisplay = () =>{
-		if (this.state.loginError.length != 0 ) {
-			return(
-				// <Alert id="userAlreadyExistsAlert" color="danger">{this.state.loginError}</Alert>
+    if (this.state.loginError.length !== 0 ) {
+      return(
+        // <Alert id="userAlreadyExistsAlert" color="danger">{this.state.loginError}</Alert>
         <Alert id="userAlreadyExistsAlert" color="danger">{this.state.loginError}</Alert>
-			)
-		}
-		else if (this.state.userHasAuthenticated == true){
-			return(
-				<Alert id ="succesfulNewUserRegistration" color="success">Registration was succesfull</Alert>
-			)
-		}
+      )
+    }
+    else if (this.state.userHasAuthenticated === true){
+      return(
+        <Alert id ="succesfulNewUserRegistration" color="success">Registration was succesfull</Alert>
+      )
+    }
   }
 
   
   render() {
-		return (
-			<div>
-			<Modal isOpen={this.props.registerWindowState} toggle={this.toggle} className={this.props.className}>
-			<ModalHeader toggle={this.toggle}>Web Store Register</ModalHeader>
-			<ModalBody>
+    return (
+      <div>
+      <Modal isOpen={this.props.registerWindowState} toggle={this.toggle} className={this.props.className}>
+      <ModalHeader toggle={this.toggle}>Web Store Register</ModalHeader>
+      <ModalBody>
 
-			<InputGroup>
+      <InputGroup>
         <Input 
         name="registerEmailInput"
-				value={this.state.email} 
-				onChange={this.updateEmail}
-				placeholder="Email"
-				/>
-			</InputGroup>
+        value={this.state.email} 
+        onChange={this.updateEmail}
+        placeholder="Email"
+        />
+      </InputGroup>
 
-			<InputGroup>
-				<Input
+      <InputGroup>
+        <Input
         name="registerEmailPassword"
-				type="password"
-				value={this.state.password} 
-				onChange={this.updatePassword}
-				placeholder="Password" />
-			</InputGroup>
+        type="password"
+        value={this.state.password} 
+        onChange={this.updatePassword}
+        placeholder="Password" />
+      </InputGroup>
 
 
-			</ModalBody>
-			<ModalFooter>
-				{this.loginErrorDisplay()}
-				<Button id="submitRegisterUser" color="success" onClick={this.handleSubmit}>register</Button>{' '}
- 			</ModalFooter>
-			</Modal>
+      </ModalBody>
+      <ModalFooter>
+        {this.loginErrorDisplay()}
+        <Button id="submitRegisterUser" color="success" onClick={this.handleSubmit}>register</Button>{' '}
+      </ModalFooter>
+      </Modal>
 
-			</div>
+      </div>
 
-			);
+      );
   }
 }
 
 
 const mapDispatchToProps = (dispatch) => ({
-	toggleRegisterWindowDispatch: (toggle) => dispatch(toggleRegisterModal(toggle)),
+  toggleRegisterWindowDispatch: (toggle) => dispatch(toggleRegisterModal(toggle)),
 })
 
 const mapStateToProps = state => {
-	return {
-		registerWindowState: state.registerWindowState,
-		isloading:state.loading,
-	}
+  return {
+    registerWindowState: state.registerWindowState,
+    isloading:state.loading,
+  }
 }
 
 export default Signup = connect(mapStateToProps,mapDispatchToProps)(Signup);
