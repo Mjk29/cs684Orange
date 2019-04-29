@@ -22,7 +22,7 @@ import { toggleLoginModal, userLoginAction } from '../actions'
 import { Auth } from "aws-amplify";
 
 
-class LoginModal extends React.Component {
+export class LoginModal extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {

@@ -27,7 +27,7 @@ import { toggleCartModalAction, userLoginAction, removeItemFromCartAction, fetch
 // import { Auth } from "aws-amplify";
 
 
-class CartModal extends React.Component {
+export class CartModal extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {

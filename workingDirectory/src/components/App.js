@@ -14,7 +14,7 @@ import { connectToMasterServer} from '../actions'
 // import { bindActionCreators } from 'redux'
 
 
-class App extends Component{
+export class App extends Component{
 
 	componentDidMount(){
 		if (window.location.search.length > 0) {

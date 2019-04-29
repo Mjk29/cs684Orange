@@ -27,9 +27,6 @@ const reducer = (state = {}, action) => {
 	
 		// In use reducers
 		case 'FETCH_FROM_SERVER':
-			console.log("Fetch from server reduer")
-			console.log(action)
-			
 			switch (action.searchObj.searchType){
 				case "fetchCartItems":
 					return{...state }
@@ -43,17 +40,6 @@ const reducer = (state = {}, action) => {
 						loading: true
 					}
 			}
-			// if (action.searchObj.searchType == "addItemToCart") {
-			// 	return{
-			// 		...state
-			// 	}
-			// }
-			// else{
-			// 	return{
-			// 		...state, 
-			// 		loading: true
-			// 	}
-			// }
 
 		case 'FETCHED_SINGLE_ITEM':
 			return{...state, 
@@ -63,8 +49,6 @@ const reducer = (state = {}, action) => {
 			}
 
 		case 'FETCHED_MULTIPLE_ITMES':
-		console.log("heres the action object in fmi")
-		console.log(action.items)
 			return{...state, 
 				loading: false, 
 				singleItem:[], 
@@ -72,10 +56,6 @@ const reducer = (state = {}, action) => {
 			}
 
 		case 'ADD_ITEM_TO_CART':
-			console.log("heres the action object in fmi")
-			console.log(action.item)
-			console.log(action.item.productId)
-			console.log(action.item.usItemId)
 			return{
 				...state, 
     			cartItems: state.cartItems.concat(action.item)
@@ -84,9 +64,6 @@ const reducer = (state = {}, action) => {
 
         
 		case 'LOGIN_USER':
-			console.log("login user action : ")
-			console.log(action)
-			// localStorage.userEmail = action.userEmail.authEmail
 			localStorage.setItem("previouslyLoggedIn", true)
 			return{
 				...state, 
@@ -95,14 +72,9 @@ const reducer = (state = {}, action) => {
 			}
 
 		case 'LOGIN_USER_UPDATE_LOCAL_VARS':
-			console.log("LOGIN_USER_UPDATE_LOCAL_VARS")
-			console.log(action)
-			console.log(action.items.affectedRows)
 			if (action.items.affectedRows >= 0) {
 				return{
 					...state,
-					// userHasAuthenticated:true,
-					// userEmail:
 				}
 			}
 			else{
@@ -112,23 +84,18 @@ const reducer = (state = {}, action) => {
 			}
 
 		case 'CHANGE_USER_LOGIN_WINDOW_STATE':
-			console.log("CHANGE_USER_LOGIN_WINDOW_STATE : ")
-			console.log(action)
 			return{
 				...state, 
     			loginWindowState: action.loginState.loginWindowState
 			}
 
 		case 'CHANGE_USER_REGISTER_WINDOW_STATE':
-			console.log("CHANGE_USER_REGISTER_WINDOW_STATE: ")
-			console.log(action)
 			return{
 				...state, 
     			registerWindowState: action.registerWindowState
 			}
 		
 		case 'TOGGLE_REGISTER_MODAL':
-			console.log(state)
 			return{
 				...state,
 				registerWindowState: !state.registerWindowState
@@ -136,7 +103,6 @@ const reducer = (state = {}, action) => {
 			
 
 		case 'TOGGLE_LOGIN_MODAL':
-			console.log(state)
 			return{
 				...state,
 				loginWindowState: !state.loginWindowState
@@ -144,34 +110,24 @@ const reducer = (state = {}, action) => {
 
 
 		case 'TOGGLE_CART_MODAL':
-			console.log(state)
 			return{
 				...state,
 				cartModalState: !state.cartModalState
 		}
 
 		case 'ADD_ENTIRE_ITEM_DATA_TO_CART':
-			console.log("HERE IS TE ADD_ENTIRE_ITEM_DATA_TO_CART ")
-			console.log(action)
-			console.log(action.items[0])
 			return{
 				...state,
 				cartItems:{...state.cartItems, [action.items[0].productId]:2},
 				loading:false
-				// cartItems[action.items] = 1
-				// cartItems: state.cartItems.concat(action.items)
-
 		}
 
 		case 'REMOVE_ITEM_FROM_CART':
-			console.log(action)
 			return{
 				...state
 		}
 
 		case 'FETCHED_CART_ITEMS':
-			console.log("FETCHED_CART_ITEMS")
-			console.log(action)
 			return{
 				...state,
 				loading:false,
@@ -185,18 +141,10 @@ const reducer = (state = {}, action) => {
 		}
 
 		case "CONNECT_TO_MASTER_SERVER":
-		console.log("CONNECTING TO MASTER SERVER ")
 			return{
 				...state,
 				loading:true
 			}
-		
-
-
-
-
-
-
 		default:
 			return state;
 	}
