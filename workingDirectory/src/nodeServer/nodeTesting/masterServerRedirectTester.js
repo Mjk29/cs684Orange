@@ -28,7 +28,8 @@ function main() {
 			break
 
 		default:
-		console.log("enter args")
+		console.log(" -connection n")
+		console.log(" -stress n n")
 	}
 
 }
@@ -61,7 +62,7 @@ var tableConfig = {
 };
 
 		var tableData = JSON.parse(contents).aggregate
-		console.log(tableData)
+		// console.log(tableData)
 		var serverTable = [
 			[
 				'#ofRequests',
@@ -84,12 +85,25 @@ var tableConfig = {
 				dataIn.timer.elapsed +" ms"
 			]
 		]
-
+		// console.log(tableData.codes)
 	var codeTable = [[],[]]
 	for( code in tableData.codes){
-		if (code === "200" ||code === "301" ||code === "302") {
+		if (code === "200") {
 			codeTable[0].push(chalk.green.inverse(code))
 			codeTable[1].push(chalk.green.inverse(tableData.codes[code]))
+		}
+		else if(code === "301" ){
+			console.log("300")
+			codeTable[0].push(chalk.green.inverse(code))
+			codeTable[1].push(chalk.green.inverse(tableData.codes[code]))
+		}
+		else if(code === "302"){
+			codeTable[0].push(chalk.green.inverse(code))
+			codeTable[1].push(chalk.green.inverse(tableData.codes[code]))
+		}
+		else if(code === "500"){
+			codeTable[0].push(chalk.red.inverse(code))
+			codeTable[1].push(chalk.red.inverse(tableData.codes[code]))
 		}
 		else{
 			codeTable[0].push(chalk.red.inverse(code))
@@ -98,10 +112,43 @@ var tableConfig = {
 		
 	}
 
+
 	var table1 = table.table(serverTable, tableConfig)
 	var table2 = table.table(codeTable, tableConfig)
 	process.stdout.write('\033c\033[2J'+table1+table2);
+	// console.log(table1)
+	// console.log(table2)
+var myobj = {}
+myobj["qString"]=
+		"INSERT INTO ma995.\`684Testing\`"
+		+"(testName, command, "
+		+"args, \`timestamp\`, numberOfRequests, "
+		+"requestsPerSecond, minLatency, maxLatency, "
+		+"medianLatency, p95Latency, p99Latency, "
+		+"timeElapsed, 200Response, 301Response, "
+		+"302Response, 500Response, otherResponse)"
+	+"VALUES("
+		+"\"stress\", \"node masterServerRedirectTester.js -stress\", "
+		+"\""+parseInt(process.argv[3], 10)+" "
+		+parseInt(process.argv[4], 10)+"\", "
+		+"NOW(), "
+		+tableData.requestsCompleted+","
+		+tableData.rps.mean+", "
+		+tableData.latency.min+", "
+		+tableData.latency.max +", "
+		+tableData.latency.median+", "
+		+tableData.latency.p95+", "
+		+tableData.latency.p99+", "
+		+dataIn.timer.elapsed +", "
+		+tableData.codes["200"]+", "
+		+tableData.codes["301"]+", "
+		+tableData.codes["302"]+", "
+		+"0,0"
+		+");"
 
+		// console.log(myobj)
+
+	dbConnect(myobj["qString"])
 });
 }
 
@@ -199,3 +246,30 @@ function fetchURLInfo(address) {
 }
 
 
+
+
+
+
+function dbConnect(qString){
+	// console.log("db function")
+	// console.log(qString)
+	var mysql = require('mysql') 
+	var connection = mysql.createConnection({
+	  host     : 'sql.njit.edu',
+	  user     : 'ma995',
+	  password : 'pickup82',
+	  database : 'ma995'
+	});
+
+	connection.connect()
+
+	connection.query(qString, function (err, rows, fields) {
+	if (err){
+ 		console.log(err)
+ 		return
+
+	}
+})
+
+	connection.end()
+}

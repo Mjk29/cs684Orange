@@ -71,3 +71,29 @@ END;
 DROP PROCEDURE createTransactions;
 
 CALL createTransactions('admin@example.com');
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+CREATE PROCEDURE testStats(IN testTerm1 VARCHAR(255), IN testTerm2 VARCHAR(255), IN testTerm3 VARCHAR(255), IN testTerm4 VARCHAR(255), IN testTerm5 VARCHAR(255))
+ BEGIN
+	SET profiling = 1;
+	select count(*) from 684Items where title like testTerm1;
+	select count(*) from 684Items where title like testTerm2;
+	select count(*) from 684Items where title like testTerm3;
+	select count(*) from 684Items where title like testTerm4;
+	select count(*) from 684Items where title like testTerm5;
+	SHOW PROFILES;
+ END;
+
+
+
+
+DROP PROCEDURE testStats;
+
+
+CALL testStats('%halo%', '%starcraft%','%coffee%','%dude%', '%qwdqwdqwdqwdqwd%');

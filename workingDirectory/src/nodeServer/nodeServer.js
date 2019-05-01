@@ -18,8 +18,9 @@ http.listen(process.argv[2], function(){
 
 
 app.get('/', function (req, res) {
-	qString = "SELECT productid, usItemId,  title FROM "+itemTableName+" WHERE title LIKE \'"+req.query.Query+"%\' ORDER BY hotness DESC"
+	qString = "select count(*) as itemCount from "+itemTableName
 	dbConnect(req,res, qString)
+	// res.send("go away")
 })
 
 app.post('/', function (req, res) {
