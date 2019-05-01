@@ -21,10 +21,19 @@ function main() {
 			break
 
 		case "-stress":
-			aTest()
-			.then((data)=> {
+			if (process.argv[5] === "-loop" && Number.isInteger(parseInt(process.argv[6], 10))){
+				console.log(process.argv[5])
+				console.log(process.argv[6])
+			}
+		
+			setInterval(()=>{
+				aTest()
+				.then((data)=> {
 				formatATest(data)
 			})
+			}, process.argv[6]*1000)
+
+			
 			break
 
 		default:
