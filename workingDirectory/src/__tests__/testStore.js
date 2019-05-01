@@ -29,3 +29,6 @@ export const testStore = (initialState) => {
 };
 
 
+it('testStoreExists', () => {
+		
+	})

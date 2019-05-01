@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import { connectToMasterServer} from '../actions'
 // import { bindActionCreators } from 'redux'
 
-import Signup from './Signup.js'
 
 export class App extends Component{
 

@@ -1,6 +1,6 @@
 import reducers from '../reducers';
 import moxios from 'moxios';
-import { testStore } from './testStore.js';
+// import { testStore } from './testStore.js';
 import { fetchFromServer } from './../actions';
 import createSagaMiddleware from 'redux-saga';
 import { createStore, applyMiddleware, compose } from 'redux';
