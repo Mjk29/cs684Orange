@@ -122,10 +122,13 @@ export function* fetchFromServer(event){
 	// Fetch to server with searchType & query
 	// yield put actionType & returned adata
 	let timer = { time0:0, time1:1, elapsed:0 }
+
+	var servAddr = {sva: 'http://'+localStorage.serverAddress+':'+localStorage.serverPort}
+	console.log(servAddr)
 	try{
 		
 		timer.time0 = Date.now()
-		const json = yield fetch('http://afsconnect2.njit.edu:'+localStorage.serverPort, {
+		const json = yield fetch("http://"+localStorage.serverAddress+':'+localStorage.serverPort, {
 			method: 'POST',
 			mode: "cors",
 			dataType: 'jsonp',
@@ -146,7 +149,7 @@ export function* fetchFromServer(event){
 		console.log(timer)
 
 
-		fetch('http://afsconnect2.njit.edu:'+localStorage.dashboardPort, {
+		fetch(localStorage.serverAddress+':'+localStorage.dashboardPort, {
 			method: 'POST',
 			mode: "cors",
 			dataType: 'jsonp',

@@ -23,6 +23,7 @@ export class App extends Component{
 				var portObj = JSON.parse(decodeURIComponent(window.location.search.slice(1)))
 				localStorage.setItem("serverPort",portObj.serverPort)
 				localStorage.setItem("dashboardPort", portObj.dashboardPort)
+				localStorage.setItem("serverAddress", portObj.serverAddress)
 			}
 			catch{
 				console.log("malformed serverport")

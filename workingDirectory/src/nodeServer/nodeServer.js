@@ -34,8 +34,14 @@ app.post('/', function (req, res) {
 			dbConnect(req,res, qString, req.body)
 			break;
 		case "multipleItemSearch":
-			qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 100"
-			dbConnect(req,res, qString, req.body)
+			//qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 50"
+			//dbConnect(req,res, qString, req.body)
+			
+			// all chars in query are now escaped - manuel 
+			qString = "SELECT productId, usItemId, title, imageUrl, price FROM ?? WHERE title LIKE ? ORDER BY hotness DESC LIMIT 50"
+			const inserts = [itemTableName, '%'+req.body.query+'%'];
+			const sql =  mysql.format(qString, inserts);
+			dbConnect(req, res, sql, req.body);
 			break;
 		
 
@@ -82,6 +88,12 @@ app.post('/', function (req, res) {
 		case "checkoutItems":
 			console.log(req.body.query)
 			qString = "CALL createTransactions('"+req.body.query+"');"
+			dbConnect(req,res, qString, req.body)
+			break
+
+
+		case "selectTest":
+			qString = req.body.query
 			dbConnect(req,res, qString, req.body)
 			break
 

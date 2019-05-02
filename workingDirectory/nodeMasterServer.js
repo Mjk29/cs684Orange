@@ -36,8 +36,8 @@ function main() {
 			checkCurrentProcesses("nodeServer.js")
 			.then((data) => {
 				console.log(data)
-				// serverList["nodeServer.js"] = formatPgrep(data)
-				// displayTable(serverList, "nodeServer.js")
+				serverList["nodeServer.js"] = formatPgrep(data)
+				displayTable(serverList, "nodeServer.js")
 			})
 			break
 
@@ -274,17 +274,25 @@ function displayTable(serverList, filename) {
 
 function listenForConnections() {
 	
-
-	http.listen(5680)
-	app.get('/', function (req, res) {
-		res.redirect("http://afsconnect2.njit.edu:"
-			+serverList["startNPMServer.js"][nextServer]["port"]
-			+"/?"+(JSON.stringify({
-				"serverPort":serverList["nodeServer.js"][nextServer++]["port"],
-				"dashboardPort":5581
-			})))
-		if (nextServer >= maxServer) {nextServer = 0}
+	getHostname()
+	.then(data=>{
+		console.log(data)
+		var hostname = data.cmdOutput.split('\n')[0]
+		console.log(hostname)
+		http.listen(5680)
+			app.get('/', function (req, res) {
+				res.redirect(`http://${hostname}:`
+					+serverList["startNPMServer.js"][nextServer]["port"]
+					+"/?"+(JSON.stringify({
+						"serverPort":serverList["nodeServer.js"][nextServer++]["port"],
+						"dashboardPort":5581,
+						"hostname":hostname
+					})))
+				if (nextServer >= maxServer) {nextServer = 0}
+			})
 	})
+
+	
 }
 
 function startNodeServers(filename, updateTime, numberOfServers, test) {
@@ -423,6 +431,7 @@ function checkCurrentProcesses(filename) {
 				resolve({error:err})		
 			}
 			else{	
+				console.log(cmdOutput)
  				resolve({output:cmdOutput})	
 			}
 		});
