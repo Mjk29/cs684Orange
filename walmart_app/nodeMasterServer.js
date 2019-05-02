@@ -9,6 +9,7 @@ var table = require('table')
 global.nextServer = 0
 global.maxServer = process.argv[3]
 global.serverList = []
+global.ghostname=""
 
 
 app.use(function(req, res, next) {
@@ -18,7 +19,13 @@ app.use(function(req, res, next) {
 });
 	app.use(bodyParser.json())
 
-main()
+getHostname()
+.then((data)=>{
+	ghostname = data
+	main()
+})
+
+
 
 function main() {
 
@@ -107,7 +114,7 @@ function killCommand() {
 function testBuild() {
 	getHostname()
 	.then((data)=>{
-		data.cmdOutput =  `afsconnect2.njit.edu\\n`
+		// data.cmdOutput =  `afsconnect2.njit.edu\\n`
 		const regex = /afsconnect\d\.njit\.edu\\n/gm;
 		if (regex.test(data.cmdOutput)){
 			console.log(chalk.magentaBright.inverse.bold(
@@ -424,18 +431,29 @@ function run(startList, filename, updateTime, test) {
 }
 
 function checkCurrentProcesses(filename) {
-	return new Promise(resolve =>{
-		var parsedArray = []
-		exec("pgrep -u \"$(whoami)\" -f "+filename+" -a", (err, cmdOutput, stderr) => {
-			if (err){	
-				resolve({error:err})		
-			}
-			else{	
-				console.log(cmdOutput)
- 				resolve({output:cmdOutput})	
-			}
-		});
-	})
+
+
+		const regex = /afsconnect\d\.njit\.edu\\n/gm;
+		if (regex.test(ghostname)) {
+			pgrepString = "pgrep -u \"$(whoami)\" -f "+filename+" -a"
+		}
+		else{
+			pgrepString = "pgrep -u \"$(whoami)\" -f "+filename+" -a | grep -v \"/bin/sh\""
+		}
+
+
+		return new Promise(resolve =>{
+			var parsedArray = []
+			exec(pgrepString, (err, cmdOutput, stderr) => {
+				if (err){	
+					resolve({error:err})		
+				}
+				else{	
+					console.log(cmdOutput)
+	 				resolve({output:cmdOutput})	
+				}
+			});
+		})
 }
 
 function getHostname() {

@@ -18,7 +18,7 @@ import {
 
   } from 'reactstrap';
 import Searchbar from './Searchbar.js'
-import { changeUserLoginWindowStateAction, toggleCartModalAction,fetchFromServer } from '../actions'
+import { changeUserLoginWindowStateAction, toggleCartModalAction,fetchFromServer, changeRegisterWindowStateAction } from '../actions'
 import { connect } from 'react-redux';
 
 
