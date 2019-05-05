@@ -181,7 +181,18 @@ export class CartModal extends React.Component {
 		})
 	}
 
-
+	checkoutButton = () =>{
+		return(
+			<Button 
+				outline 
+				color="info"
+				size="lg"
+				onClick={()=>this.checkoutItems()}
+			>
+				Checkout
+			</Button> 
+			)
+	}
 
 
  	render() {
@@ -209,14 +220,7 @@ export class CartModal extends React.Component {
 	 				</h4>
 	 				</Row>
 	 				<Row  >
-	 				<Button 
-							outline 
-							color="info"
-							size="lg"
-							onClick={()=>this.checkoutItems()}
-							>
-							Checkout
-						</Button> 
+	 				<div>{this.checkoutButton()}</div>
 				</Row>
  			</ModalFooter>
 			</Modal>
