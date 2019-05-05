@@ -32,7 +32,7 @@ BEGIN
 	
 	INSERT INTO ma995.`684Cart`
 	(userEmail, productId, usItemId, quantity)
-	VALUES(userEmailIn, productIdIn, usItemIdIn, 1)
+	VALUES(userEmailIn, productIdIn, usItemIdIn, quantityIn)
 	on duplicate key update quantity = quantity +quantityIn;
 
 	
