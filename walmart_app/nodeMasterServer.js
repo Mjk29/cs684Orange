@@ -42,7 +42,6 @@ function main() {
 		case "-list":
 			checkCurrentProcesses("nodeServer.js")
 			.then((data) => {
-				console.log(data)
 				serverList["nodeServer.js"] = formatPgrep(data)
 				displayTable(serverList, "nodeServer.js")
 			})
@@ -57,9 +56,8 @@ function main() {
 		case "-listNPM":
 			checkCurrentProcesses("startNPMServer.js")
 			.then((data) => {
-				console.log(data)
-				// serverList["startNPMServer.js"] = formatPgrep(data)
-				// displayTable(serverList, "startNPMServer.js")
+				serverList["startNPMServer.js"] = formatPgrep(data)
+				displayTable(serverList, "startNPMServer.js")
 			})
 			break
 		case "-startNPM":
@@ -405,9 +403,10 @@ function startNodeServerTest() {
 function run(startList, filename, updateTime, test) {
 	var minutes = 5
 	var portHash = {}
-	for (var i = 0; i < startList.length; i++) {
-		portHash[startList[i].args] = 0
-	}
+	// for (var i = 0; i < startList.length; i++) {
+	// 	portHash[startList[i].args] = 0
+	// }
+
 	setInterval(function() {
 		for(var pH in portHash){
 			portHash[pH] = 0
@@ -422,7 +421,7 @@ function run(startList, filename, updateTime, test) {
 			var restartList = []
 			for(var pH in portHash){
 				if(portHash[pH] == 0){
-					restartList.push({command:"node", file: filename, args:pH})
+					restartList.push({command:"node",file: "./src/nodeServer/"+filename, args:pH})
 				}
 			}
 			startSlaveNode(restartList)
@@ -449,7 +448,7 @@ function checkCurrentProcesses(filename) {
 					resolve({error:err})		
 				}
 				else{	
-					console.log(cmdOutput)
+					// console.log(cmdOutput)
 	 				resolve({output:cmdOutput})	
 				}
 			});
