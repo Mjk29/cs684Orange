@@ -3,6 +3,8 @@ var http = require('http').Server(app);
 var bodyParser = require('body-parser')
 var itemTableName = "684Items"
 var cartTableName = "684Cart"
+var mysql = require('mysql') 
+
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -122,7 +124,6 @@ function dbErrorHandler(returnedErrorMessage, originalBody, res,req){
 }
 
 function dbConnect(req,res, qString, originalBody){
-	var mysql = require('mysql') 
 	var connection = mysql.createConnection({
 	  host     : 'sql.njit.edu',
 	  user     : 'ma995',

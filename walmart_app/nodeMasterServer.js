@@ -291,7 +291,7 @@ function listenForConnections() {
 					+"/?"+(JSON.stringify({
 						"serverPort":serverList["nodeServer.js"][nextServer++]["port"],
 						"dashboardPort":5581,
-						"hostname":hostname
+						"serverAddress":hostname
 					})))
 				if (nextServer >= maxServer) {nextServer = 0}
 			})
