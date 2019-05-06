@@ -281,9 +281,9 @@ function listenForConnections() {
 	
 	getHostname()
 	.then(data=>{
-		console.log(data)
+		// console.log(data)
 		var hostname = data.cmdOutput.split('\n')[0]
-		console.log(hostname)
+		// console.log(hostname)
 		http.listen(5680)
 			app.get('/', function (req, res) {
 				res.redirect(`http://${hostname}:`
