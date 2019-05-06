@@ -101,14 +101,15 @@ function sendEmail($request){
     <th class="tg-0lax" colspan=3 style="font-family: Arial, sans-serif;font-size: 14px;font-weight: normal;padding: 10px 5px;border-style: solid;border-width: 1px;overflow: hidden;word-break: normal;border-color: black;text-align: left;vertical-align: top;">$%G<br></th>
   </tr>
   <tr>
-    <td class="tg-xr1e" colspan=3 style="font-family: Arial, sans-serif;font-size: 14px;padding: 10px 5px;border-style: solid;border-width: 1px;overflow: hidden;word-break: normal;border-color: #333333;font-weight: bold;background-color: #efefef;color: #036400;text-align: left;vertical-align: top;">NJ Tax<br></td>
-    <td class="tg-0lax" colspan=3 style="font-family: Arial, sans-serif;font-size: 14px;padding: 10px 5px;border-style: solid;border-width: 1px;overflow: hidden;word-break: normal;border-color: black;text-align: left;vertical-align: top;">%s</td>
+    <td class="tg-xr1e" colspan=2 style="font-family: Arial, sans-serif;font-size: 14px;padding: 10px 5px;border-style: solid;border-width: 1px;overflow: hidden;word-break: normal;border-color: #333333;font-weight: bold;background-color: #efefef;color: #036400;text-align: left;vertical-align: top;">NJ Tax<br></td>
+    <td class="tg-0lax" colspan=1 style="font-family: Arial, sans-serif;font-size: 14px;padding: 10px 5px;border-style: solid;border-width: 1px;overflow: hidden;word-break: normal;border-color: black;text-align: left;vertical-align: top;">%s</td>
+    <td class="tg-0lax" colspan=1 style="font-family: Arial, sans-serif;font-size: 14px;padding: 10px 5px;border-style: solid;border-width: 1px;overflow: hidden;word-break: normal;border-color: black;text-align: left;vertical-align: top;">$%s</td>
   </tr>
   <tr>
     <td class="tg-xr1e" colspan=3 style="font-family: Arial, sans-serif;font-size: 14px;padding: 10px 5px;border-style: solid;border-width: 1px;overflow: hidden;word-break: normal;border-color: #333333;font-weight: bold;background-color: #efefef;color: #036400;text-align: left;vertical-align: top;">Total</td>
     <td class="tg-0lax" colspan=3 style="font-family: Arial, sans-serif;font-size: 14px;padding: 10px 5px;border-style: solid;border-width: 1px;overflow: hidden;word-break: normal;border-color: black;text-align: left;vertical-align: top;">$%G</td>
   </tr>
-</table>', $totalPrice, "6.625%", round($totalPrice*0.06625, 2));
+</table>', $totalPrice, "6.625%", round($totalPrice*0.06625, 2), $totalPrice+round($totalPrice*0.06625, 2));
 
 
 
