@@ -206,8 +206,7 @@ function connectionTester() {
 		})
 		.then((data)=>{		
 			let redirectHeader = data.output.split("\r\n")
-			let masterServer = redirectHeader[4].split(' ')[1]
-
+			let masterServer = redirectHeader[8].split(' ')[1]
 			fetchURLInfo(masterServer)
 			.catch((data)=>{
 				console.log(chalk.bold.redBright.bgBlack('  \u03A7  ')+chalk.bold.redBright(` Failed : Fetch from Master Server`))
