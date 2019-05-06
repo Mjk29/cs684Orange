@@ -153,9 +153,6 @@ function getTransaction($txNum){
 		."FROM ma995.`684Transaction` T JOIN ma995.`684Items` I on T.usItemId = I.usItemId AND T.productId = I.productId "
 		."WHERE transactionNumber=%s ;", $txNum);
 
-	echo "\n";
-	echo $sql;
-echo "\n";
 	$result = $link->query($sql);
 	
 	if ($result->num_rows == 0) {		

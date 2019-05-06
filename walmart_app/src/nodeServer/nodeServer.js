@@ -125,13 +125,8 @@ function dbErrorHandler(returnedErrorMessage, originalBody, res,req){
 
 function checkoutItems(rows) {
 	
-setTimeout(function(){
-
-
-
-
 	var txNumber = rows[0][0].txNumber
-	console.log(txNumber)
+	// console.log(txNumber)
 	const data = JSON.stringify({
 		requestType: 'dispatchTransactionEmail',
 		requestData: {txNumber: txNumber}
@@ -147,21 +142,20 @@ setTimeout(function(){
 		}
 	}
 	const req = https.request(options, (res) => {
-		console.log(`statusCode: ${res.statusCode}`)
+		// console.log(`statusCode: ${res.statusCode}`)
 
-		res.on('data', (d) => {
-			process.stdout.write(d)
-		})
+		// res.on('data', (d) => {
+		// 	process.stdout.write(d)
+		// })
 	})
 
 	req.on('error', (error) => {
 		console.error(error)
 	})
 
-	console.log(data)
+	// console.log(data)
 	req.write(data)
 	req.end()
-	}, 500);
 
 }
 
