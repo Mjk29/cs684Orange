@@ -60,10 +60,10 @@ BEGIN
 	SELECT 	cart.userEmail, cart.usItemId,	cart.productId, 	items.price, 	cart.quantity, 	NOW(), 		txNumber+1
 	FROM ma995.`684Cart` cart
 	INNER JOIN ma995.`684Items` items ON cart.productId = items.productId
-	WHERE cart.userEmail = 'admin@example.com';
+	WHERE cart.userEmail = userEmailIn;
 
 	DELETE FROM ma995.`684Cart`
-	WHERE userEmail='admin@example.com' ;
+	WHERE userEmail=userEmailIn ;
 
 	SELECT txNumber+1 as txNumber;
 
@@ -73,7 +73,8 @@ END;
 
 DROP PROCEDURE createTransactions;
 
-CALL createTransactions('admin@example.com');
+CALL createTransactions('boogers@gmail.com');
+
 
 
 -------------------------------------------------------------------------
