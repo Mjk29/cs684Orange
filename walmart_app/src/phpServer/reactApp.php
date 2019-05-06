@@ -57,7 +57,9 @@ function checkServerStatus($serverAddr){
 
 
 function sendEmail($request){
+	print_r($request);
 	$txNum = $request["txNumber"];
+	print_r($txNum);
 
 	$result = getTransaction($txNum);
 
@@ -118,9 +120,9 @@ $emailMessage .= '</body></html>';
 
 
 		$emailTo      = "mjk29@njit.edu";
-		$subject = 'NIT CoAD Electroncis Lab Receipt 2';
+		$subject = 'Team Orange React App';
 		$message = $emailMessage;
-		$headers =	'From: CoAD_ElectronicsLab' . "\r\n" .
+		$headers =	'From: Team_Orange' . "\r\n" .
 					'Reply-To:doNotReplyToThisEmail' . "\r\n" .
 					'X-Mailer: PHP/' . phpversion()."\r\n".
 					'MIME-Version: 1.0'."\r\n".
@@ -131,6 +133,7 @@ $emailMessage .= '</body></html>';
 
 	
 function getTransaction($txNum){
+
 	$servername = "sql.njit.edu";
 	$username = "ma995";
 	$password = "pickup82";
@@ -145,6 +148,9 @@ function getTransaction($txNum){
 		."FROM ma995.`684Transaction` T JOIN ma995.`684Items` I on T.usItemId = I.usItemId AND T.productId = I.productId "
 		."WHERE transactionNumber=%s ;", $txNum);
 
+	echo "\n";
+	echo $sql;
+echo "\n";
 	$result = $link->query($sql);
 	
 	if ($result->num_rows == 0) {		

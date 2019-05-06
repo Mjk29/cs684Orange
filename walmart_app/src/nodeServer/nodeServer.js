@@ -4,6 +4,7 @@ var bodyParser = require('body-parser')
 var itemTableName = "684Items"
 var cartTableName = "684Cart"
 var mysql = require('mysql') 
+const https = require('https')
 
 
 app.use(function(req, res, next) {
@@ -38,8 +39,7 @@ app.post('/', function (req, res) {
 		case "multipleItemSearch":
 			//qString = "SELECT productId, usItemId, title, imageUrl, price FROM "+itemTableName+" WHERE title LIKE \'%"+req.body.query+"%\' ORDER BY hotness DESC LIMIT 50"
 			//dbConnect(req,res, qString, req.body)
-			
-			// all chars in query are now escaped - manuel 
+			// all chars in query are now escaped - manuel
 			qString = "SELECT productId, usItemId, title, imageUrl, price FROM ?? WHERE title LIKE ? ORDER BY hotness DESC LIMIT 50"
 			const inserts = [itemTableName, '%'+req.body.query+'%'];
 			const sql =  mysql.format(qString, inserts);
@@ -51,7 +51,7 @@ app.post('/', function (req, res) {
 			qString = "CALL addItemToCart('"+req.body.query.userEmail
 					+"', '"+req.body.query.item.productId
 					+"', '"+req.body.query.item.usItemId
-					+"', '"+req.body.query.quantity+"');"
+					+"', "+req.body.query.quantity+");"
 			dbConnect(req,res, qString, req.body)
 			break;
 
@@ -90,7 +90,7 @@ app.post('/', function (req, res) {
 		case "checkoutItems":
 			console.log(req.body.query)
 			qString = "CALL createTransactions('"+req.body.query+"');"
-			dbConnect(req,res, qString, req.body)
+			dbConnect(req,res, qString, req.body,checkoutItems)
 			break
 
 
@@ -123,25 +123,81 @@ function dbErrorHandler(returnedErrorMessage, originalBody, res,req){
 	}
 }
 
-function dbConnect(req,res, qString, originalBody){
+function checkoutItems(rows) {
+	
+setTimeout(function(){
+
+
+
+
+	var txNumber = rows[0][0].txNumber
+	console.log(txNumber)
+	const data = JSON.stringify({
+		requestType: 'dispatchTransactionEmail',
+		requestData: {txNumber: txNumber}
+	})
+	const options = {
+		hostname: 'web.njit.edu',
+		port: 443,
+		path: '/~mjk29/reactApp.php',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Content-Length': data.length
+		}
+	}
+	const req = https.request(options, (res) => {
+		console.log(`statusCode: ${res.statusCode}`)
+
+		res.on('data', (d) => {
+			process.stdout.write(d)
+		})
+	})
+
+	req.on('error', (error) => {
+		console.error(error)
+	})
+
+	console.log(data)
+	req.write(data)
+	req.end()
+	}, 500);
+
+}
+
+
+
+function dbConnect(req,res, qString, originalBody, callbackFunction){
 	var connection = mysql.createConnection({
-	  host     : 'sql.njit.edu',
-	  user     : 'ma995',
-	  password : 'pickup82',
-	  database : 'ma995'
+		host     : 'sql.njit.edu',
+		user     : 'ma995',
+		password : 'pickup82',
+		database : 'ma995'
 	});
 	connection.connect()
 	connection.query(qString, function (err, rows, fields) {
-	if (err){
- 		dbErrorHandler(err, originalBody, res, req)
- 		return
+		if (err){
+	 		dbErrorHandler(err, originalBody, res, req)
+	 		connection.end()
+	 		return
 
-	}
-	res.send(JSON.stringify({rows:rows, original:originalBody}))
+		}else{
+			res.send(JSON.stringify({rows:rows, original:originalBody}))
+			connection.end()
+			// console.log(callbackFunction)
+			// console.log(rows)
+			if (callbackFunction != undefined) {
+				callbackFunction(rows)
+			}
+		}
 	})
-
-	connection.end()
+	
+	// console.log(rows)
+	// if (callbackFunction === "checkoutItems") {
+	// 	checkoutItems(rows)
+	// }
 }
+
 
 // autocomplete ideas
 // user starts typing, after 3 characters the string is queried at the db
